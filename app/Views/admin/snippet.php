@@ -21,13 +21,26 @@
     <link href="<?= ASSET_URL . 'public/assets/libs/jvectormap/jquery-jvectormap.css' ?>" rel="stylesheet" />
     <!-- Custom CSS -->
     <link href="<?= ASSET_URL . 'public/dist/css/style.min.css' ?>" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Data Table -->
+    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 </head>
 
 <body>
-    <?= $this->renderSection('content')?>
+    <?= $this->include('admin/common') ?>
+    <?= $this->renderSection('content') ?>
+
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="<?= ASSET_URL . 'public/assets/libs/jquery/dist/jquery.min.js' ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+        <script src="<?= ASSET_URL . 'public/assets/libs/jquery/dist/jquery.min.js' ?>"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="<?= ASSET_URL . 'public/assets/libs/popper.js/dist/umd/popper.min.js' ?>"></script>
     <script src="<?= ASSET_URL . 'public/assets/libs/bootstrap/dist/js/bootstrap.min.js' ?>"></script>
