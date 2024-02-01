@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= ASSET_URL . 'public/assets/images/favicon.png' ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= ASSET_URL . 'public/assets/images/gallery/LOGO.png' ?>">
     <title>Basava Tv</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/xtremeadmin/" />
     <link href="<?= ASSET_URL . 'public/assets/libs/chartist/dist/chartist.min.css' ?>" rel="stylesheet">
@@ -30,6 +30,9 @@
     <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 </head>
+<style>
+    li a { text-decoration: none;}
+</style>
 
 <body>
     <?= $this->include('admin/common') ?>
@@ -40,7 +43,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-        <script src="<?= ASSET_URL . 'public/assets/libs/jquery/dist/jquery.min.js' ?>"></script>
+    <script src="<?= ASSET_URL . 'public/assets/libs/jquery/dist/jquery.min.js' ?>"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="<?= ASSET_URL . 'public/assets/libs/popper.js/dist/umd/popper.min.js' ?>"></script>
     <script src="<?= ASSET_URL . 'public/assets/libs/bootstrap/dist/js/bootstrap.min.js' ?>"></script>

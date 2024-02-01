@@ -6,7 +6,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Homecontroller::index');
+$routes->get('/', 'AuthController::login');
 
 
 $routes->group('admin',  function ($routes) {
@@ -24,10 +24,31 @@ $routes->group('admin',  function ($routes) {
     $routes->get('highlighted_program', 'HomeController::highlighted_program');
     // add_highlighted
     $routes->post('add_highlighted', 'HomeController::add_highlighted');
-    
+    // precious Program
+    $routes->get('precious_program', 'HomeController::precious_program');
+    // add_precious
+    $routes->post('add_precious', 'HomeController::add_precious');
+    // product
+    $routes->get('product', 'ProductController::product');
+    // add_product
+    $routes->post('add_product', 'ProductController::add_product');
+    // admin data
+    $routes->get('admin_data', 'Homecontroller::admin');
+    //banners
+    $routes->get('banners', 'Homecontroller::banners');
+    // products
+    $routes->get('enquiry_data', 'ProductController::enquiry_data');
 });
 
 $routes->group('api', function($routes){
     // retrive_data
     $routes->get('retrive_data', 'Homecontroller::retrive_data');
+    $routes->get('fetch_data', 'Homecontroller::fetch_data');
+    // precious program
+    $routes->get('precious', 'Homecontroller::precious');
+    $routes->get('fetch_precious', 'Homecontroller::fetch_precious');
+    // products
+    $routes->get('fetch_product', 'ProductController::fetch_product');
+    $routes->get('retrive_product', 'ProductController::retrive_product');
+
 });

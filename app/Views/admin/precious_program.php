@@ -18,7 +18,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Highlighted Program</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Add Precious Program</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -63,7 +63,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-row">
                         <div class="title">
-                            Highlighted Program
+                            Precious Program
                         </div>
                         <div class="add-program">
                             <button class="btn btn-info" id="add" data-bs-toggle="modal"
@@ -97,7 +97,8 @@
         serverSide: true,
         paging: true,
         ajax: {
-            url: "<?= base_url('api/retrive_data') ?>",
+            url: "<?= base_url('api/precious') ?>",
+            // type: "POST"
             type: "GET"
         },
         drawCallback: function (settings) {
@@ -122,7 +123,7 @@
             // console.log(formData);
             $.ajax({
                 method: "POST",
-                url: "<?= base_url('admin/add_highlighted') ?>",
+                url: "<?= base_url('admin/add_precious') ?>",
                 data: formData,
                 dataType: "json",
                 success: function (response) {
