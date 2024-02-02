@@ -67,28 +67,6 @@ class Homecontroller extends BaseController
         }
     }
 
-    // App API
-    public function fetch_data()
-    {
-        $fetchData = new \App\Models\HighlightedProgramModel();
-        $videoData = $fetchData->findAll();
-        if (!empty($videoData)) {
-            $output = [
-                'status' => 'true',
-                'message' => 'Video Data',
-                'data' => $videoData
-            ];
-        } else {
-            $output = [
-                'status' => 'false',
-                'message' => 'No Data found',
-                'data' => []
-            ];
-        }
-
-        return $this->response->setJSON($output);
-
-    }
     public function retrive_data()
     {
         // error_log("Request received");
@@ -230,35 +208,168 @@ class Homecontroller extends BaseController
         // echo json_encode($output);
     }
 
-    // app API
-    public function fetch_precious()
-    {
-        $fetchData = new \App\Models\PreciousProgramModel();
-        $videoData = $fetchData->findAll();
-        if (!empty($videoData)) {
-            $output = [
-                'status' => 'true',
-                'message' => 'Video Data',
-                'data' => $videoData
-            ];
-        } else {
-            $output = [
-                'status' => 'false',
-                'message' => 'No Data found',
-                'data' => []
-            ];
-        }
-
-        return $this->response->setJSON($output);
-    }
 
     public function admin()
     {
         return view('admin/admin_data');
     }
 
+    public function admin_info()
+    {
+        try {
+            $fetchAdmin = new \App\Models\AdminModel();
+
+            $draw = $_GET['draw'];
+            $start = $_GET['start'];
+            $length = $_GET['length'];
+
+            // Fetch banners
+            $data['banner'] = $fetchAdmin->findAll($length, $start);
+            $totalRecords = $fetchAdmin->countAll();
+            $associativeArray = [];
+
+            foreach ($data['banner'] as $row) {
+                $associativeArray[] = array(
+                    0 => $row['id'],
+                    1 => $row['name'],
+                    2 => $row['email'],
+                );
+            }
+
+            if (empty($data['banner'])) {
+                $output = array(
+                    "draw" => intval($draw),
+                    "recordsTotal" => 0,
+                    "recordsFiltered" => 0,
+                    "data" => [],
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($draw),
+                    "recordsTotal" => $totalRecords,
+                    "recordsFiltered" => $totalRecords,
+                    "data" => $associativeArray,
+                );
+            }
+
+            return $this->response->setJSON($output);
+        } catch (\Exception $e) {
+            // Log the caught exception
+            log_message('error', 'Error in fetch_banner: ' . $e->getMessage());
+
+            // Return an error response
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
     public function banners()
     {
         return view('admin/banners');
     }
+    public function add_banner()
+    {
+        $validation = $this->validate([
+            // validation rules
+            'banner_name' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Banner Name is required',
+                ]
+            ],
+            'banner_img' => [
+                'rules' => 'uploaded[banner_img]|max_size[banner_img,1024]|mime_in[banner_img,image/png,image/jpg,image/jpeg]',
+                'errors' => [
+                    'uploaded' => 'Product Image is required.',
+                    'max_size' => 'Maximum file size allowed is 1 MB.',
+                    'mime_in' => 'Only png, jpg, jpeg formats are allowed for the Banner Image.',
+                ]
+            ],
+        ]);
+
+        // check validation
+        if (!$validation) {
+            $validation = \Config\Services::validation();
+            $errors = $validation->getErrors();
+            $message = ['status' => 'error', 'data' => 'Validate form', 'errors' => $errors];
+            return $this->response->setJSON($message);
+        } else {
+            $bannerName = $this->request->getPost('banner_name');
+            $bannerImg = $this->request->getFile('banner_img'); // Use getFile to get the uploaded file instance
+
+            if ($bannerImg->isValid() && !$bannerImg->hasMoved()) {
+                $newProdName = $bannerImg->getRandomName();
+                $bannerImg->move("../public/assets/uploads/banner", $newProdName);
+                $value = [
+                    'banner_name' => $bannerName,
+                    'banner_img' => $newProdName,
+                ];
+                // calling model to submit data to the database
+                $addBanner = new \App\Models\BannerModel();
+                $query = $addBanner->insert($value);
+
+                if (!$query) {
+                    $message = ['status' => 'error', 'message' => 'Something went wrong!'];
+                    return $this->response->setJSON($message);
+                } else {
+                    $message = ['status' => 'success', 'message' => 'Data added successfully!'];
+                    return $this->response->setJSON($message);
+                }
+            } else {
+                $message = ['status' => 'error', 'message' => 'Invalid image file'];
+                return $this->response->setJSON($message);
+            }
+        }
+    }
+
+    public function fetch_banner()
+    {
+        try {
+            $fetchBanner = new \App\Models\BannerModel();
+
+            $draw = $_GET['draw'];
+            $start = $_GET['start'];
+            $length = $_GET['length'];
+
+            // Fetch banners
+            $data['banner'] = $fetchBanner->findAll($length, $start);
+            $totalRecords = $fetchBanner->countAll();
+            $associativeArray = [];
+
+            foreach ($data['banner'] as $row) {
+                $associativeArray[] = array(
+                    0 => $row['id'],
+                    1 => $row['banner_name'],
+                    2 => '<img src="' . ASSET_URL . 'public/assets/uploads/banner/' . $row['banner_img'] . '" height="100px" width="200px">',
+                    3 => '<button class="btn btn-info">Active</button>
+                    <button class="btn btn-danger">Delete</button>
+                    <button class="btn btn-warning">Update</button>',
+                );
+            }
+
+            if (empty($data['banner'])) {
+                $output = array(
+                    "draw" => intval($draw),
+                    "recordsTotal" => 0,
+                    "recordsFiltered" => 0,
+                    "data" => [],
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($draw),
+                    "recordsTotal" => $totalRecords,
+                    "recordsFiltered" => $totalRecords,
+                    "data" => $associativeArray,
+                );
+            }
+
+            return $this->response->setJSON($output);
+        } catch (\Exception $e) {
+            // Log the caught exception
+            log_message('error', 'Error in fetch_banner: ' . $e->getMessage());
+
+            // Return an error response
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
 }

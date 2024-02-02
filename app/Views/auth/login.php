@@ -31,6 +31,9 @@
                                     type="button" name="login" id="login">Log In</button>
                             </div>
                         </div>
+                        <div class="warning-message">
+                            <p class="wrn_msg text-danger mt-4" style="text-align:center;"></p>
+                        </div>
                         <div class="form-group mb-0 mt-4">
                             <div class="col-sm-12 justify-content-center d-flex">
                                 <p>Don't have an account? <a href="<?= base_url('admin/register') ?>"
@@ -58,18 +61,23 @@
                 dataType: "json",
                 success: function (response) {
                     $('input').removeClass('is-invalid');
+                    $('.warning-message').hide();
                     if (response.status == 'success') {
                         $('input').val('');
                         // console.log('User Login');
                         window.location.href = "<?= base_url('admin/basavatv') ?>";
                     } else {
                         let error = response.errors;
-                        // console.log(error);
+                        // console.log(response.message);
                         for (const key in error) {
                             // console.log(key, error[key]);
                             document.getElementById(key).classList.add('is-invalid');
                             document.getElementById(key + '_msg').innerHTML = error[key];
                         }
+                        // Display warning message
+                        let wrngpass = response.message;
+                        $('.wrn_msg').text(wrngpass);
+                        $('.warning-message').show();
                     }
                 }
             });

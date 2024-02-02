@@ -126,8 +126,8 @@
                 // console.log(rowData[3]);
                 var rowNode = this.node();
                 // Apply CSS style to the fourth column
-                var fourthColumn = $(rowNode).find('td:eq(5)');
-                fourthColumn.css('display', 'flex').children().css('margin-right', '10px'); 
+                var fifthColumn = $(rowNode).find('td:eq(5)');
+                fifthColumn.css('display', 'flex').children().css('margin-right', '10px'); 
             });
         }
     });
@@ -135,7 +135,7 @@
     $(document).ready(function () {
         $('#save').click(function (e) {
             e.preventDefault();
-            console.log('clicked');
+            // console.log('clicked');
             // let formData = $('#formId').serialize();
             let formData = new FormData($('#formId')[0]);
             // console.log(formData);

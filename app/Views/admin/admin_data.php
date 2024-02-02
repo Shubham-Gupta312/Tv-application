@@ -30,12 +30,30 @@
                             <th>Email</th>
                         </tr>
                     </thead>
-                    <tbody class="videoInfo">
+                    <tbody class="adminInfo">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    var table = $('#myTable').DataTable({
+        processing: true,
+        serverSide: true,
+        paging: true,
+        ajax: {
+            url: "<?= base_url('api/admin_info') ?>",
+            type: "GET",
+            error: function(xhr, error, thrown) {
+            console.log("AJAX error:", xhr, error, thrown);
+        }
+        },
+        drawCallback: function (settings) {
+            // console.log('Table redrawn:', settings);
+        }
+    });
+</script>
 
 <?= $this->endSection() ?>

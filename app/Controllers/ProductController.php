@@ -96,7 +96,7 @@ public function fetch_product()
                     2 => $row['prod_price'],
                     3 => $row['prod_desc'],
                     // 4 => $row['prod_img'],
-                    // 4 => '<img src="../public/assets/uploads"$row[prod_img] height="100px" width="100px">',
+                    4 => '<img src="' . ASSET_URL . 'public/assets/uploads/' . $row['prod_img'] . '"height="100px" width="100px">',
                     5 => '<button class="btn btn-info">Active</button>
                         <button class="btn btn-danger">Delete</button>
                         <button class="btn btn-warning">Update</button>',
@@ -128,27 +128,6 @@ public function fetch_product()
         }
     }
 
-    // app API
-    public function retrive_product()
-    {
-        $fetchData = new \App\Models\ProductModel();
-        $videoData = $fetchData->findAll();
-        if (!empty($videoData)) {
-            $output = [
-                'status' => 'true',
-                'message' => 'Video Data',
-                'data' => $videoData
-            ];
-        } else {
-            $output = [
-                'status' => 'false',
-                'message' => 'No Data found',
-                'data' => []
-            ];
-        }
-
-        return $this->response->setJSON($output);
-    }
 
     public function enquiry_data()
     {
