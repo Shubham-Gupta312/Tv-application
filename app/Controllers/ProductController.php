@@ -14,6 +14,13 @@ class ProductController extends BaseController
     {
         $validation = $this->validate([
             // validation rules
+            'prod_id' => [
+                'rules' => 'required|alpha_numeric_punct',
+                'errors' => [
+                    'required' => 'Product ID is required',
+                    'alpha_numeric_punct' => 'Product Id field may contain only alphanumeric characters, spaces, and ~ ! # $ % & * - _ + = | : . characters.',
+                ]
+            ],
             'prod_name' => [
                 'rules' => 'required',
                 'errors' => [
@@ -43,6 +50,7 @@ class ProductController extends BaseController
             $message = ['status' => 'error', 'data' => 'Validate form', 'errors' => $errors];
             return $this->response->setJSON($message);
         } else {
+            $prodId = $this->request->getPost('prod_id');
             $prodName = $this->request->getPost('prod_name');
             $prodPrice = $this->request->getPost('prod_price');
             $prodDesc = $this->request->getPost('prod_desc');
@@ -52,6 +60,7 @@ class ProductController extends BaseController
                 $newProdName = $prodImg->getRandomName();
                 $prodImg->move("../public/assets/uploads", $newProdName);
                 $value = [
+                    'prod_id' => $prodId,
                     'prod_name' => $prodName,
                     'prod_price' => $prodPrice,
                     'prod_desc' => $prodDesc,
@@ -75,11 +84,11 @@ class ProductController extends BaseController
         }
     }
 
-public function fetch_product()
+    public function fetch_product()
     {
         try {
             $fetchData = new \App\Models\ProductModel();
-    
+
             $draw = $_GET['draw'];
             $start = $_GET['start'];
             $length = $_GET['length'];
@@ -88,21 +97,21 @@ public function fetch_product()
             $data['products'] = $fetchData->findAll($length, $start);
             $totalRecords = $fetchData->countAll();
             $associativeArray = [];
-    
+
             foreach ($data['products'] as $row) {
                 $associativeArray[] = array(
                     0 => $row['id'],
-                    1 => $row['prod_name'],
-                    2 => $row['prod_price'],
-                    3 => $row['prod_desc'],
-                    // 4 => $row['prod_img'],
-                    4 => '<img src="' . ASSET_URL . 'public/assets/uploads/' . $row['prod_img'] . '"height="100px" width="100px">',
-                    5 => '<button class="btn btn-info">Active</button>
+                    1 => $row['prod_id'],
+                    2 => $row['prod_name'],
+                    3 => $row['prod_price'],
+                    4 => $row['prod_desc'],
+                    5 => '<img src="' . ASSET_URL . 'public/assets/uploads/' . $row['prod_img'] . '"height="100px" width="100px">',
+                    6 => '<button class="btn btn-success active" id="active">Active</button>
                         <button class="btn btn-danger">Delete</button>
                         <button class="btn btn-warning">Update</button>',
                 );
             }
-    
+
             if (empty($data['products'])) {
                 $output = array(
                     "draw" => intval($draw),
@@ -123,7 +132,7 @@ public function fetch_product()
         } catch (\Exception $e) {
             // Log the caught exception
             log_message('error', 'Error in fetch_product: ' . $e->getMessage());
-    
+
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }
@@ -133,4 +142,44 @@ public function fetch_product()
     {
         return view('admin/enquiry_products');
     }
+
+    public function setActiveStatus()
+    {
+        try {
+            $productModel = new \App\Models\ProductModel();
+            $id = $this->request->getPost('id');
+
+            // Fetch the current status from the database
+            $currentStatus = $productModel->getStatusById($id);
+
+            // Toggle the status (assuming 0 is inactive and 1 is active)
+            $newStatus = ($currentStatus == 0) ? 1 : 0;
+            // echo $newStatus;
+
+            // Update the status in the database
+            $updateResult = $productModel->updateStatus($id, $newStatus);
+
+            if ($updateResult) {
+                $response = [
+                    'status' => 'success',
+                    'oldStatus' => $currentStatus,
+                    'newStatus' => $newStatus
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Failed to update product status.'
+                ];
+            }
+
+            // Send the JSON response back to the client
+            return $this->response->setJSON($response);
+
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in setActiveStatus: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
 }

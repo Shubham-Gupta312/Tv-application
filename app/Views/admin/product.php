@@ -28,6 +28,13 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="mb-3">
+                                                    <label for="title" class="form-label">Product ID</label><span
+                                                        class="text-danger">*</span>
+                                                    <input type="text" class="form-control" id="prod_id" name="prod_id">
+                                                    <div class="invalid-feedback" class="text-danger" id="prod_id_msg">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
                                                     <label for="title" class="form-label">Product Name</label><span
                                                         class="text-danger">*</span>
                                                     <input type="text" class="form-control" id="prod_name"
@@ -93,6 +100,7 @@
                     <thead>
                         <tr>
                             <th>S.no</th>
+                            <th>Product ID</th>
                             <th>Product Name</th>
                             <th>Product Image</th>
                             <th>Product Price</th>
@@ -120,17 +128,125 @@
         },
         drawCallback: function (settings) {
             // console.log('Table redrawn:', settings);
-            table.rows().every(function (index, element) {
-                // Get data for the row (including hidden columns)
-                var rowData = this.data();
-                // console.log(rowData[3]);
-                var rowNode = this.node();
-                // Apply CSS style to the fourth column
-                var fifthColumn = $(rowNode).find('td:eq(5)');
-                fifthColumn.css('display', 'flex').children().css('margin-right', '10px'); 
-            });
+            // table.rows().every(function (index, element) {
+            //     // Get data for the row (including hidden columns)
+            //     // var rowData = this.data();
+            //     // // console.log(rowData[3]);
+            //     // var rowNode = this.node();
+            //     // Apply CSS style to the fourth column
+            //     // var sixthColumn = $(rowNode).find('td:eq(6)');
+            //     // sixthColumn.css('display', 'flex').children().css('margin-right', '10px'); 
+            // });
         }
     });
+
+
+    // Function to set button styles based on product status
+    function setButtonStyles(button, status) {
+        if (status === 1) {
+            button.removeClass('btn-danger').addClass('btn-success').text('Active');
+        } else {
+            button.removeClass('btn-success').addClass('btn-danger').text('Inactive');
+        }
+    }
+
+    var table = $('#productTable').DataTable();
+    // Click event handler for the '.active' buttons
+    $(document).on('click', '.active', function () {
+        var button = $(this);
+        var data = table.row(button.closest('tr')).data();
+        var productId = data[0]; // Assuming the product ID is in the first column
+        console.log(productId);
+
+        $.ajax({
+            method: 'POST',
+            url: '<?= base_url('admin/setActiveStatus') ?>',
+            data: {
+                'id': productId,
+            },
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+
+                if (response.status === 'success') {
+                    // Toggle the status for UI update
+                    var newStatus = response.newStatus;
+                    console.log('Product status changed to', (newStatus === 1) ? 'Active' : 'Inactive', 'successfully.');
+
+                    // Update the button style
+                    setButtonStyles(button, newStatus);
+
+                    // Save the status in localStorage
+                    localStorage.setItem('productStatus_' + productId, newStatus);
+                } else {
+                    console.error('Failed to update product status.');
+                }
+            },
+            error: function (error) {
+                console.error('AJAX Error:', error);
+            }
+        });
+    });
+
+    // Apply button styles on page load
+    $('.active').each(function () {
+        var button = $(this);
+        var data = table.row(button.closest('tr')).data();
+        var productId = data[0];
+        var storedStatus = localStorage.getItem('productStatus_' + productId);
+
+        if (storedStatus !== null) {
+            // If a status is stored, apply the button style
+            setButtonStyles(button, parseInt(storedStatus));
+        }
+    });
+
+    // $(document).on('click', '.active', function () {
+    //     var button = $(this);
+    //     var data = table.row(button.closest('tr')).data();
+    //     var productId = data[0]; // Assuming the product ID is in the first column
+    //     console.log(productId);
+
+    //     $.ajax({
+    //         method: 'POST',
+    //         url: '<?= base_url('admin/setActiveStatus') ?>',
+    //         data: {
+    //             'id': productId,
+    //         },
+    //         dataType: 'json',
+    //         success: function (response) {
+    //             console.log(response);
+
+    //             if (response.status === 'success') {
+    //                 // Toggle the status for UI update
+    //                 console.log('before click',response.oldStatus);
+    //                 var newStatus = response.newStatus;
+    //                 console.log('after click',newStatus);
+
+
+    //                 if (newStatus === 1) {
+    //                     // Update UI for Active status
+    //                     button.removeClass('btn-danger').addClass('btn-success').text('Active');
+    //                     console.log('Product status changed to ACTIVE successfully.');
+    //                 } else {
+    //                     // Update UI for Inactive status
+    //                     button.removeClass('btn-success').addClass('btn-danger').text('Inactive');
+    //                     console.log('Product status changed to IN-ACTIVE successfully.');
+    //                 }
+
+
+    //             } else {
+    //                 console.error('Failed to update product status.');
+    //             }
+    //         },
+    //         error: function (error) {
+    //             console.error('AJAX Error:', error);
+    //         }
+    //     });
+    // });
+
+
+
     // open modal, save and fetch data
     $(document).ready(function () {
         $('#save').click(function (e) {

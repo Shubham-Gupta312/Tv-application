@@ -32,6 +32,9 @@ $routes->group('admin',  function ($routes) {
     $routes->get('product', 'ProductController::product');
     // add_product
     $routes->post('add_product', 'ProductController::add_product');
+    // active or inactive
+    $routes->post('setActiveStatus', 'ProductController::setActiveStatus');
+    // $routes->post('set-active-status/(:num)/(:num)', 'ProductController::setActiveStatus/$1/$2');
     // admin data
     $routes->get('admin_data', 'Homecontroller::admin');
     //banners
