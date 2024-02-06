@@ -24,4 +24,20 @@ class ProductModel extends Model
         // Update the status in the database
         return $this->set(['status' => $newStatus])->where('id', $productId)->update();
     }
+
+    public function deleteProduct($id)
+    {
+        // Assuming your primary key field is 'id'
+        return $this->where('id', $id)->delete();
+    }
+
+    public function editProduct($id)
+    {
+        return $this->find($id);
+    }
+
+    public function updateProduct($id, $data)
+    {
+        return $this->update($id, $data);
+    }
 }

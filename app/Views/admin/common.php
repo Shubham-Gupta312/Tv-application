@@ -18,9 +18,8 @@
             <!-- toggle and nav items -->
             <!-- ============================================================== -->
             <ul class="navbar-nav mr-auto float-left">
-                <!-- This is  -->
-                <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-md-block waves-effect waves-dark"
-                        href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                <!-- <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-md-block waves-effect waves-dark"
+                        href="javascript:void(0)"><i class="bi bi-list"></i></a> </li> -->
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
             </ul>

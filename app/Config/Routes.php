@@ -34,7 +34,12 @@ $routes->group('admin',  function ($routes) {
     $routes->post('add_product', 'ProductController::add_product');
     // active or inactive
     $routes->post('setActiveStatus', 'ProductController::setActiveStatus');
-    // $routes->post('set-active-status/(:num)/(:num)', 'ProductController::setActiveStatus/$1/$2');
+    // edit_data
+    $routes->post('edit_data', 'ProductController::edit_product');
+    // Update data
+    $routes->post('update_data', 'ProductController::update_data');
+    // delete product
+    $routes->post('delete_product', 'ProductController::product_delete');
     // admin data
     $routes->get('admin_data', 'Homecontroller::admin');
     //banners

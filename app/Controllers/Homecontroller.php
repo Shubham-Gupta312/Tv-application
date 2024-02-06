@@ -84,9 +84,9 @@ class Homecontroller extends BaseController
                 0 => $row['id'],
                 1 => $row['video_title'],
                 2 => $row['video_url'],
-                3 => '<button class="btn btn-info">Active</button>
-                    <button class="btn btn-danger">Delete</button>
-                    <button class="btn btn-warning">Update</button>'
+                3 => '<button class="btn btn-info"><i class="bi bi-check-lg"></i></button>
+                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>'
                 ,
             );
         }
@@ -181,9 +181,9 @@ class Homecontroller extends BaseController
                 0 => $row['id'],
                 1 => $row['video_title'],
                 2 => $row['video_url'],
-                3 => '<button class="btn btn-info">Active</button>
-                    <button class="btn btn-danger">Delete</button>
-                    <button class="btn btn-warning">Update</button>'
+                3 => '<button class="btn btn-info"><i class="bi bi-check-lg"></i></button>
+                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>'
                 ,
             );
         }
@@ -340,9 +340,9 @@ class Homecontroller extends BaseController
                     0 => $row['id'],
                     1 => $row['banner_name'],
                     2 => '<img src="' . ASSET_URL . 'public/assets/uploads/banner/' . $row['banner_img'] . '" height="100px" width="200px">',
-                    3 => '<button class="btn btn-info">Active</button>
-                    <button class="btn btn-danger">Delete</button>
-                    <button class="btn btn-warning">Update</button>',
+                    3 => '<button class="btn btn-info"><i class="bi bi-check-lg"></i></button>
+                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>',
                 );
             }
 

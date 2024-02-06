@@ -99,6 +99,16 @@ class ProductController extends BaseController
             $associativeArray = [];
 
             foreach ($data['products'] as $row) {
+                $status = $row['status'];
+
+                // Set button CSS class based on the status
+                if ($status == 0) {
+                    $buttonCSSClass = 'btn-danger'; // Set button CSS class to red for status value 0
+                    $iconClass = 'bi bi-x';
+                } elseif ($status == 1) {
+                    $buttonCSSClass = 'btn-success'; // Set button CSS class to green for status value 1
+                    $iconClass = 'bi bi-check-lg';
+                }
                 $associativeArray[] = array(
                     0 => $row['id'],
                     1 => $row['prod_id'],
@@ -106,9 +116,10 @@ class ProductController extends BaseController
                     3 => $row['prod_price'],
                     4 => $row['prod_desc'],
                     5 => '<img src="' . ASSET_URL . 'public/assets/uploads/' . $row['prod_img'] . '"height="100px" width="100px">',
-                    6 => '<button class="btn btn-success active" id="active">Active</button>
-                        <button class="btn btn-danger">Delete</button>
-                        <button class="btn btn-warning">Update</button>',
+                    6 => '<button class="btn ' . $buttonCSSClass . ' active" id="active"><i class="' . $iconClass . '"></i></button>
+                        <button class="btn btn-danger delete" id="delete"><i class="bi bi-trash3"></i></button>
+                        <button class="btn btn-warning update" id="update" data-bs-toggle="modal"
+                        data-bs-target="#updateModal"><i class="bi bi-pencil-square"></i></button>',
                 );
             }
 
@@ -175,9 +186,71 @@ class ProductController extends BaseController
             // Send the JSON response back to the client
             return $this->response->setJSON($response);
 
-
         } catch (\Exception $e) {
             log_message('error', 'Error in setActiveStatus: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function product_delete()
+    {
+        try {
+            $deleteProduct = new \App\Models\ProductModel();
+
+            $id = $this->request->getPost('id');
+            // Perform the delete operation
+            $deleted = $deleteProduct->delete($id);
+
+            if ($deleted) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product deleted successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to delete product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in product_delete: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function edit_product()
+    {
+        try {
+            $editProduct = new \App\Models\ProductModel();
+            $id = $this->request->getPost('id');
+            // Fetch the product data for editing
+            $productData = $editProduct->find($id);
+
+            if ($productData) {
+                return $this->response->setJSON(['status' => 'success', 'data' => $productData]);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Product not found']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in edit_product: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function update_data()
+    {
+        try {
+            $updateProduct = new \App\Models\ProductModel();
+            $id = $this->request->getPost('id');
+            $data = [
+                'prod_id' => $this->request->getPost('prod_id'),
+                'prod_name' => $this->request->getPost('prod_name'),
+                'prod_price' => $this->request->getPost('prod_price'),
+                'prod_desc' => $this->request->getPost('prod_desc'),
+            ];
+            // print_r($data);
+            $updated = $updateProduct->updateProduct($id, $data);
+            if ($updated) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product updated successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in update_data: ' . $e->getMessage());
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }
