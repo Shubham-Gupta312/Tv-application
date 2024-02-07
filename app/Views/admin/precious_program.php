@@ -12,7 +12,7 @@
     <div class="page-wrapper">
         <div class="container-fluid">
             <div class="row">
-                <!-- Modal -->
+                <!-- Add Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -55,6 +55,55 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary" id="save" name="save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update data Modal -->
+                <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Update Program</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <form id="formId">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="hidden" name="productUpdateId" id="productUpdateId">
+                                                <div class="mb-3">
+                                                    <label for="title" class="form-label">Video Title</label><span
+                                                        class="text-danger">*</span>
+                                                    <input type="text" class="form-control" id="Uvideo_title"
+                                                        name="Uvideo_title">
+                                                    <div class="invalid-feedback" class="text-danger"
+                                                        id="Uvideo_title_msg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="expiryDate" class="form-label">Video URL</label>
+                                                    <span class="text-danger">*</span>
+                                                    <input type="text" class="form-control" name="Uvideo_url"
+                                                        id="Uvideo_url">
+                                                    <div class="invalid-feedback" class="text-danger"
+                                                        id="Uvideo_url_msg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="update_data" name="update_data">Save
+                                    Changes</button>
                             </div>
                         </div>
                     </div>
@@ -110,7 +159,7 @@
                 var rowNode = this.node();
                 // Apply CSS style to the fourth column
                 var fourthColumn = $(rowNode).find('td:eq(3)');
-                fourthColumn.css('display', 'flex').children().css('margin-right', '10px'); 
+                fourthColumn.css('display', 'flex').children().css('margin-right', '10px');
             });
         }
     });
@@ -129,8 +178,9 @@
                 success: function (response) {
                     $('input').removeClass('is-invalid');
                     if (response.status == 'success') {
-                        // $('input').val('');
+                        $('input').val('');
                         $('#exampleModal').modal('hide');
+                        table.ajax.reload(null, false);
                         // console.log(response);
                     } else {
                         let error = response.errors;
@@ -144,6 +194,130 @@
                     }
                 }
             });
+        });
+    });
+
+    // active and inactive status
+    // Function to set button styles based on product status
+    function setButtonStyles(button, status) {
+        if (status === 1) {
+            button.removeClass('btn-danger').addClass('btn-success').html('<i class="bi bi-check-lg"></i>');
+        } else {
+            button.removeClass('btn-success').addClass('btn-danger').html('<i class="bi bi-x"></i>');
+        }
+    }
+    // Click event handler for the '.active' buttons
+    var table = $('#myTable').DataTable();
+    $(document).on('click', '.active', function () {
+        // console.log('clicked');
+        var button = $(this);
+        var data = table.row(button.closest('tr')).data();
+        var programId = data[0]; // Assuming the product ID is in the first column
+        // console.log(programId);
+
+        $.ajax({
+            method: 'POST',
+            url: '<?= base_url('admin/setPreciousActiveStatus') ?>',
+            data: {
+                'id': programId,
+            },
+            dataType: 'json',
+            success: function (response) {
+                // console.log(response);
+
+                if (response.status === 'success') {
+                    // Toggle the status for UI update
+                    var newStatus = response.newStatus;
+                    // console.log('Product status changed to', (newStatus === 1) ? 'Active' : 'Inactive', 'successfully.');
+
+                    // Update the button style
+                    setButtonStyles(button, newStatus);
+
+                } else {
+                    console.error('Failed to update product status.');
+                }
+            },
+            error: function (error) {
+                console.error('AJAX Error:', error);
+            }
+        });
+    });
+
+    // Delete function
+    $(document).on('click', '#delete', function (e) {
+        e.preventDefault();
+        // console.log('clicked');
+        var button = $(this);
+        var data = table.row(button.closest('tr')).data();
+        var programId = data[0]; // Assuming the product ID is in the first column
+        // console.log(programId);
+        $.ajax({
+            method: "POST",
+            url: "<?= base_url('admin/delete_preciousProgram') ?>",
+            data: {
+                'id': programId
+            },
+            success: function (response) {
+                // console.log(response);
+                if (response.status == 'success') {
+                    // Refresh the table using Ajax after successful operation
+                    table.ajax.reload(null, false);
+                } else {
+                    console.error('Failed to update product status.');
+                }
+            }
+        });
+    });
+
+    // Edit and Update function
+    $(document).on('click', '#update', function (e) {
+        e.preventDefault();
+        // console.log('clicked');
+        var button = $(this);
+        var data = table.row(button.closest('tr')).data();
+        var programId = data[0];
+        // console.log(programId);
+        $('#productUpdateId').val(programId);
+        $.ajax({
+            method: "POST",
+            url: "<?= base_url('admin/edit_preciousProgramData') ?>",
+            data: {
+                'id': programId,
+            },
+            success: function (response) {
+                // console.log(response);
+                var VideoTitle = response.data.video_title;
+                var VideoURL = response.data.video_url;
+                // console.log(product_id);
+
+                // initalise the value to input feild
+                $('#Uvideo_title').val(VideoTitle);
+                $('#Uvideo_url').val(VideoURL);
+            }
+        });
+    });
+
+    // Update the data function
+    $('#update_data').click(function (e) {
+        e.preventDefault();
+        // console.log('clicked');
+        var data = {
+            'id': $('#productUpdateId').val(),
+            'prog_title': $('#Uvideo_title').val(),
+            'prog_url': $('#Uvideo_url').val(),
+        };
+        $.ajax({
+            method: "POST",
+            url: "<?= base_url('admin/update_preciousProgramData') ?>",
+            data: data,
+            success: function (response) {
+                // console.log(response);
+                if (response.status == 'success') {
+                    $('#updateModal').modal('hide');
+                    // location.reload();
+                    table.ajax.reload(null, false);
+                }
+            }
         });
     });
 </script>

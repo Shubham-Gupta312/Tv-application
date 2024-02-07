@@ -218,7 +218,7 @@ class ProductController extends BaseController
             $editProduct = new \App\Models\ProductModel();
             $id = $this->request->getPost('id');
             // Fetch the product data for editing
-            $productData = $editProduct->find($id);
+            $productData = $editProduct->editProduct($id);
 
             if ($productData) {
                 return $this->response->setJSON(['status' => 'success', 'data' => $productData]);

@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'AuthController::login');
+// $routes->get('/', 'HomeController::index');
 
 
 $routes->group('admin',  function ($routes) {
@@ -24,10 +25,26 @@ $routes->group('admin',  function ($routes) {
     $routes->get('highlighted_program', 'HomeController::highlighted_program');
     // add_highlighted
     $routes->post('add_highlighted', 'HomeController::add_highlighted');
+    // setHighlightActiveStatus
+    $routes->post('setHighlightActiveStatus', 'HomeController::setHighlightActiveStatus');
+    // delete_HighlightProgram
+    $routes->post('delete_HighlightProgram', 'HomeController::delete_HighlightProgram');
+    // edit_HighlightProgramData
+    $routes->post('edit_HighlightProgramData', 'HomeController::edit_HighlightProgramData');
+    // update_HighlightProgramData
+    $routes->post('update_HighlightProgramData', 'HomeController::update_HighlightProgramData');
     // precious Program
     $routes->get('precious_program', 'HomeController::precious_program');
     // add_precious
     $routes->post('add_precious', 'HomeController::add_precious');
+    // setProductActiveStatus
+    $routes->post('setPreciousActiveStatus', 'HomeController::setActiveStatus');
+    // delete_preciousProgram
+    $routes->post('delete_preciousProgram', 'HomeController::delete_preciousProgram');
+    // edit_preciousProgramData
+    $routes->post('edit_preciousProgramData', 'HomeController::edit_preciousProgramData');
+    // update_preciousProgramData
+    $routes->post('update_preciousProgramData', 'HomeController::update_preciousProgramData');
     // product
     $routes->get('product', 'ProductController::product');
     // add_product
@@ -46,6 +63,14 @@ $routes->group('admin',  function ($routes) {
     $routes->get('banners', 'Homecontroller::banners');
     // add banner
     $routes->post('add_banner', 'Homecontroller::add_banner');
+    // setBannerActiveStatus
+    $routes->post('setBannerActiveStatus', 'Homecontroller::setBannerActiveStatus');
+    // delete_Banner
+    $routes->post('delete_Banner', 'Homecontroller::delete_Banner');
+    // edit_BannerData
+    $routes->post('edit_BannerData', 'Homecontroller::edit_BannerData');
+    // update_BannerData
+    $routes->post('update_BannerData', 'Homecontroller::update_BannerData');
     // products
     $routes->get('enquiry_data', 'ProductController::enquiry_data');
 });

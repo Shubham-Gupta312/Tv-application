@@ -80,14 +80,23 @@ class Homecontroller extends BaseController
         $associativeArray = [];
 
         foreach ($data['videoInfo'] as $row) {
+            $status = $row['status'];
+            // Set button CSS class based on the status
+            if ($status == 0) {
+                $buttonCSSClass = 'btn-danger'; // Set button CSS class to red for status value 0
+                $iconClass = 'bi bi-x';
+            } elseif ($status == 1) {
+                $buttonCSSClass = 'btn-success'; // Set button CSS class to green for status value 1
+                $iconClass = 'bi bi-check-lg';
+            }
             $associativeArray[] = array(
                 0 => $row['id'],
                 1 => $row['video_title'],
                 2 => $row['video_url'],
-                3 => '<button class="btn btn-info"><i class="bi bi-check-lg"></i></button>
-                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>'
-                ,
+                3 => '<button class="btn ' . $buttonCSSClass . ' active" id="active"><i class="' . $iconClass . '"></i></button>
+                    <button class="btn btn-danger delete" id="delete"><i class="bi bi-trash3"></i></button>
+                    <button class="btn btn-warning update" id="update" data-bs-toggle="modal"
+                    data-bs-target="#updateModal"><i class="bi bi-pencil-square"></i></button>',
             );
         }
 
@@ -109,6 +118,105 @@ class Homecontroller extends BaseController
         // print_r($output);
         return $this->response->setJSON($output);
         // echo json_encode($output);
+    }
+
+    public function setHighlightActiveStatus()
+    {
+        try {
+            $preciousProgram = new \App\Models\HighlightedProgramModel();
+            $id = $this->request->getPost('id');
+
+            // Fetch the current status from the database
+            $currentStatus = $preciousProgram->getStatusById($id);
+
+            // Toggle the status (assuming 0 is inactive and 1 is active)
+            $newStatus = ($currentStatus == 0) ? 1 : 0;
+            // echo $newStatus;
+
+            // Update the status in the database
+            $updateResult = $preciousProgram->updateStatus($id, $newStatus);
+
+            if ($updateResult) {
+                $response = [
+                    'status' => 'success',
+                    'oldStatus' => $currentStatus,
+                    'newStatus' => $newStatus
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Failed to update product status.'
+                ];
+            }
+
+            // Send the JSON response back to the client
+            return $this->response->setJSON($response);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in setActiveStatus: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function delete_HighlightProgram()
+    {
+        try {
+            $deleteProduct = new \App\Models\HighlightedProgramModel();
+
+            $id = $this->request->getPost('id');
+            // Perform the delete operation
+            $deleted = $deleteProduct->deleteProduct($id);
+
+            if ($deleted) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product deleted successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to delete product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in product_delete: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function edit_HighlightProgramData()
+    {
+        try {
+            $editProgram = new \App\Models\HighlightedProgramModel();
+            $id = $this->request->getPost('id');
+            // Fetch the product data for editing
+            $productData = $editProgram->find($id);
+
+            if ($productData) {
+                return $this->response->setJSON(['status' => 'success', 'data' => $productData]);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Product not found']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in edit_product: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function update_HighlightProgramData()
+    {
+        try {
+            $updateProduct = new \App\Models\HighlightedProgramModel();
+            $id = $this->request->getPost('id');
+            $data = [
+                'video_title' => $this->request->getPost('prog_title'),
+                'video_url' => $this->request->getPost('prog_url'),
+            ];
+            // print_r($data);
+            $updated = $updateProduct->updateHighlightProgram($id, $data);
+            if ($updated) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product updated successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in update_data: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
     }
 
     public function precious_program()
@@ -177,14 +285,24 @@ class Homecontroller extends BaseController
         $associativeArray = [];
 
         foreach ($data['videoInfo'] as $row) {
+            $status = $row['status'];
+
+            // Set button CSS class based on the status
+            if ($status == 0) {
+                $buttonCSSClass = 'btn-danger'; // Set button CSS class to red for status value 0
+                $iconClass = 'bi bi-x';
+            } elseif ($status == 1) {
+                $buttonCSSClass = 'btn-success'; // Set button CSS class to green for status value 1
+                $iconClass = 'bi bi-check-lg';
+            }
             $associativeArray[] = array(
                 0 => $row['id'],
                 1 => $row['video_title'],
                 2 => $row['video_url'],
-                3 => '<button class="btn btn-info"><i class="bi bi-check-lg"></i></button>
-                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>'
-                ,
+                3 => '<button class="btn ' . $buttonCSSClass . ' active" id="active"><i class="' . $iconClass . '"></i></button>
+                    <button class="btn btn-danger delete" id="delete"><i class="bi bi-trash3"></i></button>
+                    <button class="btn btn-warning update" id="update" data-bs-toggle="modal"
+                        data-bs-target="#updateModal"><i class="bi bi-pencil-square"></i></button>',
             );
         }
 
@@ -208,6 +326,104 @@ class Homecontroller extends BaseController
         // echo json_encode($output);
     }
 
+    public function setActiveStatus()
+    {
+        try {
+            $preciousProgram = new \App\Models\PreciousProgramModel();
+            $id = $this->request->getPost('id');
+
+            // Fetch the current status from the database
+            $currentStatus = $preciousProgram->getStatusById($id);
+
+            // Toggle the status (assuming 0 is inactive and 1 is active)
+            $newStatus = ($currentStatus == 0) ? 1 : 0;
+            // echo $newStatus;
+
+            // Update the status in the database
+            $updateResult = $preciousProgram->updateStatus($id, $newStatus);
+
+            if ($updateResult) {
+                $response = [
+                    'status' => 'success',
+                    'oldStatus' => $currentStatus,
+                    'newStatus' => $newStatus
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Failed to update product status.'
+                ];
+            }
+
+            // Send the JSON response back to the client
+            return $this->response->setJSON($response);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in setActiveStatus: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function delete_preciousProgram()
+    {
+        try {
+            $deleteProduct = new \App\Models\PreciousProgramModel();
+
+            $id = $this->request->getPost('id');
+            // Perform the delete operation
+            $deleted = $deleteProduct->deleteProduct($id);
+
+            if ($deleted) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product deleted successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to delete product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in product_delete: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function edit_preciousProgramData()
+    {
+        try {
+            $editProgram = new \App\Models\PreciousProgramModel();
+            $id = $this->request->getPost('id');
+            // Fetch the product data for editing
+            $productData = $editProgram->find($id);
+
+            if ($productData) {
+                return $this->response->setJSON(['status' => 'success', 'data' => $productData]);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Product not found']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in edit_product: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function update_preciousProgramData()
+    {
+        try {
+            $updateProduct = new \App\Models\PreciousProgramModel();
+            $id = $this->request->getPost('id');
+            $data = [
+                'video_title' => $this->request->getPost('prog_title'),
+                'video_url' => $this->request->getPost('prog_url'),
+            ];
+            // print_r($data);
+            $updated = $updateProduct->updateProgram($id, $data);
+            if ($updated) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product updated successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in update_data: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
 
     public function admin()
     {
@@ -336,13 +552,24 @@ class Homecontroller extends BaseController
             $associativeArray = [];
 
             foreach ($data['banner'] as $row) {
+                $status = $row['status'];
+
+                // Set button CSS class based on the status
+                if ($status == 0) {
+                    $buttonCSSClass = 'btn-danger'; // Set button CSS class to red for status value 0
+                    $iconClass = 'bi bi-x';
+                } elseif ($status == 1) {
+                    $buttonCSSClass = 'btn-success'; // Set button CSS class to green for status value 1
+                    $iconClass = 'bi bi-check-lg';
+                }
                 $associativeArray[] = array(
                     0 => $row['id'],
                     1 => $row['banner_name'],
                     2 => '<img src="' . ASSET_URL . 'public/assets/uploads/banner/' . $row['banner_img'] . '" height="100px" width="200px">',
-                    3 => '<button class="btn btn-info"><i class="bi bi-check-lg"></i></button>
-                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>',
+                    3 => '<button class="btn ' . $buttonCSSClass . ' active" id="active"><i class="' . $iconClass . '"></i></button>
+                        <button class="btn btn-danger delete" id="delete"><i class="bi bi-trash3"></i></button>
+                        <button class="btn btn-warning update" id="update" data-bs-toggle="modal"
+                        data-bs-target="#updateModal"><i class="bi bi-pencil-square"></i></button>',
                 );
             }
 
@@ -368,6 +595,104 @@ class Homecontroller extends BaseController
             log_message('error', 'Error in fetch_banner: ' . $e->getMessage());
 
             // Return an error response
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function setBannerActiveStatus()
+    {
+        try {
+            $preciousProgram = new \App\Models\BannerModel();
+            $id = $this->request->getPost('id');
+
+            // Fetch the current status from the database
+            $currentStatus = $preciousProgram->getStatusById($id);
+
+            // Toggle the status (assuming 0 is inactive and 1 is active)
+            $newStatus = ($currentStatus == 0) ? 1 : 0;
+            // echo $newStatus;
+
+            // Update the status in the database
+            $updateResult = $preciousProgram->updateStatus($id, $newStatus);
+
+            if ($updateResult) {
+                $response = [
+                    'status' => 'success',
+                    'oldStatus' => $currentStatus,
+                    'newStatus' => $newStatus
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Failed to update product status.'
+                ];
+            }
+
+            // Send the JSON response back to the client
+            return $this->response->setJSON($response);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in setActiveStatus: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function delete_Banner()
+    {
+        try {
+            $deleteProduct = new \App\Models\BannerModel();
+
+            $id = $this->request->getPost('id');
+            // Perform the delete operation
+            $deleted = $deleteProduct->deleteBanner($id);
+
+            if ($deleted) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product deleted successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to delete product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in product_delete: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function edit_BannerData()
+    {
+        try {
+            $editBanner = new \App\Models\BannerModel();
+            $id = $this->request->getPost('id');
+            // Fetch the product data for editing
+            $productData = $editBanner->find($id);
+
+            if ($productData) {
+                return $this->response->setJSON(['status' => 'success', 'data' => $productData]);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Product not found']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in edit_product: ' . $e->getMessage());
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
+
+    public function update_BannerData()
+    {
+        try {
+            $updateProduct = new \App\Models\BannerModel();
+            $id = $this->request->getPost('id');
+            $data = [
+                'banner_name' => $this->request->getPost('banner_name'),
+            ];
+            // print_r($data);
+            $updated = $updateProduct->updateBanner($id, $data);
+            if ($updated) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Product updated successfully']);
+            } else {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update product']);
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Error in update_data: ' . $e->getMessage());
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }

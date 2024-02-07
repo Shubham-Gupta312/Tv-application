@@ -296,7 +296,7 @@
     // Delete function
     $(document).on('click', '#delete', function (e) {
         e.preventDefault();
-        console.log('clicked');
+        // console.log('clicked');
         var button = $(this);
         var data = table.row(button.closest('tr')).data();
         var productId = data[0]; // Assuming the product ID is in the first column
