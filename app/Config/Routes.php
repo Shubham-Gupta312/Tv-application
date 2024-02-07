@@ -10,10 +10,10 @@ $routes->get('/', 'AuthController::login');
 // $routes->get('/', 'HomeController::index');
 
 
-$routes->group('admin',  function ($routes) {
+$routes->group('admin', function ($routes) {
     // register
     $routes->get('register', 'AuthController::register');
-    $routes->post('register','AuthController::register');
+    $routes->post('register', 'AuthController::register');
     // login
     $routes->get('login', 'AuthController::login');
     $routes->post('login', 'AuthController::login');
@@ -75,7 +75,7 @@ $routes->group('admin',  function ($routes) {
     $routes->get('enquiry_data', 'ProductController::enquiry_data');
 });
 
-$routes->group('api', function($routes){
+$routes->group('api', function ($routes) {
     // retrive_data
     $routes->get('retrive_data', 'Homecontroller::retrive_data');
     $routes->get('fetch_data', 'APIController::fetch_data');

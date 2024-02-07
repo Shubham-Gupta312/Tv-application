@@ -38,22 +38,6 @@
     </div>
 </div>
 
-<script>
-    var table = $('#myTable').DataTable({
-        processing: true,
-        serverSide: true,
-        paging: true,
-        ajax: {
-            url: "<?= base_url('api/admin_info') ?>",
-            type: "GET",
-            error: function(xhr, error, thrown) {
-            console.log("AJAX error:", xhr, error, thrown);
-        }
-        },
-        drawCallback: function (settings) {
-            // console.log('Table redrawn:', settings);
-        }
-    });
-</script>
+<script src="<?= ASSET_URL . 'public/assets/js/admin_data.js' ?>"></script>
 
 <?= $this->endSection() ?>
