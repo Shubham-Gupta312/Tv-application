@@ -153,23 +153,36 @@ $(document).on('click', '#update', function (e) {
 // Update Product Data
 $('#update_data').click(function (e) {
     e.preventDefault();
-    // console.log('clicked');
-    var data = {
-        'id': $('#productUpdateId').val(),
-        'prod_id': $('#Uprod_id').val(),
-        'prod_name': $('#Uprod_name').val(),
-        'prod_price': $('#Uprod_price').val(),
-        'prod_desc': $('#Uprod_desc').val(),
-    };
+    console.log('clicked');
+    // Create a FormData object
+    var formData = new FormData();
+    
+    // Append form data
+    formData.append('id', $('#productUpdateId').val());
+    formData.append('prod_id', $('#Uprod_id').val(),);
+    formData.append('prod_name', $('#Uprod_name').val());
+    formData.append('prod_name', $('#Uprod_name').val());
+    formData.append('prod_price', $('#Uprod_price').val());
+    formData.append('prod_desc', $('#Uprod_desc').val());
+    
+    // Get the image file input element
+    var productImageFile = $('#Uprod_img')[0].files[0];
+    
+    // Check if a file is selected
+    if (productImageFile) {
+        formData.append('prod_img', productImageFile);
+    }
+    
+    // Make an AJAX request
     $.ajax({
         method: "POST",
         url: "/admin/update_data",
-        data: data,
+        data: formData,
+        contentType: false,
+        processData: false,
         success: function (response) {
-            // console.log(response);
             if (response.status == 'success') {
                 $('#updateModal').modal('hide');
-                // location.reload();
                 table.ajax.reload(null, false);
             }
         }

@@ -84,8 +84,8 @@ $(document).on('click', '.active', function () {
         // url: "<?= base_url('admin/ setBannerActiveStatus') ?>",
         url: "/admin/setBannerActiveStatus",
         data: {
-        'id': bannerId,
-    },
+            'id': bannerId,
+        },
         dataType: 'json',
         success: function (response) {
             // console.log(response);
@@ -105,8 +105,8 @@ $(document).on('click', '.active', function () {
         error: function (error) {
             console.error('AJAX Error:', error);
         }
-        });
     });
+});
 
 // Delete function
 $(document).on('click', '#delete', function (e) {
@@ -152,7 +152,7 @@ $(document).on('click', '#update', function (e) {
             'id': programId,
         },
         success: function (response) {
-            // console.log(response);
+            console.log(response);
             var BannerName = response.data.banner_name;
             // var VideoURL = response.data.video_url;
             // // console.log(product_id);
@@ -169,20 +169,24 @@ $(document).on('click', '#update', function (e) {
 $('#update_data').click(function (e) {
     e.preventDefault();
     // console.log('clicked');
-    var data = {
-        'id': $('#productUpdateId').val(),
-        'banner_name': $('#Ubanner_name').val(),
-    };
+    var formData = new FormData();
+    formData.append('id', $('#productUpdateId').val());
+    formData.append('banner_name', $('#Ubanner_name').val());
+
+    // Append the image file
+    var bannerImageFile = $('#Ubanner_img')[0].files[0];
+    formData.append('banner_img', bannerImageFile);
+
     $.ajax({
         method: "POST",
-        // url: "<?= base_url('admin/update_BannerData') ?>",
         url: "/admin/update_BannerData",
-        data: data,
+        data: formData,
+        contentType: false,
+        processData: false,
         success: function (response) {
             // console.log(response);
             if (response.status == 'success') {
                 $('#updateModal').modal('hide');
-                // location.reload();
                 table.ajax.reload(null, false);
             }
         }

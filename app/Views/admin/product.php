@@ -134,7 +134,7 @@
                                                         id="prod_desc_msg">
                                                     </div> -->
                                                 </div>
-                                                <!-- <div class="mb-3">
+                                                <div class="mb-3">
                                                     <label for="title" class="form-label">Product Image</label><span
                                                         class="text-danger">*</span>
                                                     <input type="file" class="form-control" id="Uprod_img"
@@ -142,7 +142,7 @@
                                                     <div class="invalid-feedback" class="text-danger"
                                                         id="Uprod_img_msg">
                                                     </div>
-                                                </div> -->
+                                                </div>
                                             </div>
                                         </div>
                                     </form>

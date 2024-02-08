@@ -231,12 +231,24 @@ class ProductController extends BaseController
         try {
             $updateProduct = new \App\Models\ProductModel();
             $id = $this->request->getPost('id');
+
+            $productImg = $this->request->getFile('prod_img');
             $data = [
                 'prod_id' => $this->request->getPost('prod_id'),
                 'prod_name' => $this->request->getPost('prod_name'),
                 'prod_price' => $this->request->getPost('prod_price'),
                 'prod_desc' => $this->request->getPost('prod_desc'),
             ];
+            // Check if a new product image was uploaded
+            if ($productImg->isValid() && !$productImg->hasMoved()) {
+                // Define upload directory and filename
+                $newName = $productImg->getRandomName();
+                $uploadPath = '../public/assets/uploads'; // Your upload directory
+                $productImg->move($uploadPath, $newName);
+                
+                // Add the path to the image in the data array
+                $data['prod_img'] = $newName;
+            }
             // print_r($data);
             $updated = $updateProduct->updateProduct($id, $data);
             if ($updated) {

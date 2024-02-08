@@ -679,22 +679,38 @@ class Homecontroller extends BaseController
     public function update_BannerData()
     {
         try {
-            $updateProduct = new \App\Models\BannerModel();
+            $updateBanner = new \App\Models\BannerModel();
             $id = $this->request->getPost('id');
+    
+            // Retrieve uploaded banner image
+            $bannerImage = $this->request->getFile('banner_img');
+    
             $data = [
                 'banner_name' => $this->request->getPost('banner_name'),
             ];
-            // print_r($data);
-            $updated = $updateProduct->updateBanner($id, $data);
+    
+            // Check if a new banner image was uploaded
+            if ($bannerImage->isValid() && !$bannerImage->hasMoved()) {
+                // Define upload directory and filename
+                $newName = $bannerImage->getRandomName();
+                $uploadPath = '../public/assets/uploads/banner'; // Your upload directory
+                $bannerImage->move($uploadPath, $newName);
+                
+                // Add the path to the image in the data array
+                $data['banner_img'] = $newName;
+            }
+    
+            $updated = $updateBanner->updateBanner($id, $data);
             if ($updated) {
-                return $this->response->setJSON(['status' => 'success', 'message' => 'Product updated successfully']);
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Banner updated successfully']);
             } else {
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update product']);
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update banner']);
             }
         } catch (\Exception $e) {
-            log_message('error', 'Error in update_data: ' . $e->getMessage());
+            log_message('error', 'Error in update_BannerData: ' . $e->getMessage());
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }
+    
 
 }
