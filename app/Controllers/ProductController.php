@@ -113,9 +113,9 @@ class ProductController extends BaseController
                     0 => $row['id'],
                     1 => $row['prod_id'],
                     2 => $row['prod_name'],
-                    3 => $row['prod_price'],
-                    4 => $row['prod_desc'],
-                    5 => '<img src="' . ASSET_URL . 'public/assets/uploads/' . $row['prod_img'] . '"height="100px" width="100px">',
+                    3 => '<img src="' . ASSET_URL . 'public/assets/uploads/' . $row['prod_img'] . '"height="100px" width="100px">',
+                    4 => $row['prod_price'],    
+                    5 => $row['prod_desc'],
                     6 => '<button class="btn ' . $buttonCSSClass . ' active" id="active"><i class="' . $iconClass . '"></i></button>
                         <button class="btn btn-danger delete" id="delete"><i class="bi bi-trash3"></i></button>
                         <button class="btn btn-warning update" id="update" data-bs-toggle="modal"
@@ -250,7 +250,7 @@ class ProductController extends BaseController
         }
     }
 
-     public function enquiry_data()
+    public function enquiry_data()
     {
         return view('admin/enquiry_products');
     }
