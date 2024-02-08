@@ -149,11 +149,6 @@ class ProductController extends BaseController
     }
 
 
-    public function enquiry_data()
-    {
-        return view('admin/enquiry_products');
-    }
-
     public function setActiveStatus()
     {
         try {
@@ -253,6 +248,11 @@ class ProductController extends BaseController
             log_message('error', 'Error in update_data: ' . $e->getMessage());
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
+    }
+
+     public function enquiry_data()
+    {
+        return view('admin/enquiry_products');
     }
 
 }

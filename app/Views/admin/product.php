@@ -44,8 +44,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="expiryDate" class="form-label">Product Price</label>
-                                                    <span class="text-danger">*</span>
+                                                    <label for="expiryDate" class="form-label">Product Price</label><span class="text-danger">*</span>
                                                     <input type="text" class="form-control" name="prod_price"
                                                         id="prod_price">
                                                     <div class="invalid-feedback" class="text-danger"

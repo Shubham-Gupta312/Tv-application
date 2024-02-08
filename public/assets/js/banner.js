@@ -13,15 +13,15 @@ var table = $('#bannerTable').DataTable({
     },
     drawCallback: function (settings) {
         // console.log('Table redrawn:', settings);
-        table.rows().every(function (index, element) {
-            // Get data for the row (including hidden columns)
-            var rowData = this.data();
-            // console.log(rowData[3]);
-            var rowNode = this.node();
-            // Apply CSS style to the fourth column
-            var fourthColumn = $(rowNode).find('td:eq(3)');
-            fourthColumn.css('display', 'flex').children().css('margin-right', '10px');
-        });
+        // table.rows().every(function (index, element) {
+        //     // Get data for the row (including hidden columns)
+        //     var rowData = this.data();
+        //     // console.log(rowData[3]);
+        //     var rowNode = this.node();
+        //     // Apply CSS style to the fourth column
+        //     var fourthColumn = $(rowNode).find('td:eq(3)');
+        //     fourthColumn.css('display', 'flex').children().css('margin-right', '10px');
+        // });
     }
 });
 // open modal, save and fetch data

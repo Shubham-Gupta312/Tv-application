@@ -34,6 +34,8 @@
 </head>
 <style>
     li a { text-decoration: none;}
+    table{width: 100%;}
+    table thead, tbody{text-align: center;}
 </style>
 
 <body>
