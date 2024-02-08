@@ -9,7 +9,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'AuthController::login');
 // $routes->get('/', 'HomeController::index');
 
-
 $routes->group('admin', function ($routes) {
     // register
     $routes->get('register', 'AuthController::register');
@@ -19,6 +18,9 @@ $routes->group('admin', function ($routes) {
     $routes->post('login', 'AuthController::login');
     // logout
     $routes->get('logout', 'AuthController::logout');
+});
+
+$routes->group('admin', ['filter' => 'isAdminLogin'], function ($routes) {
     // admin page (admin cms)
     $routes->get('basavatv', 'Homecontroller::basavatv', ['filter' => 'isAdminLogin']);
     //highlighted_program

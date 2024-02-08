@@ -93,17 +93,17 @@ class AuthController extends BaseController
                 'email' => [
                     'rules' => 'required|valid_email',
                     'errors' => [
-                            'required' => 'Your Email is required',
-                            'valid_email' => 'You must enter a valid email'
-                        ]
+                        'required' => 'Your Email is required',
+                        'valid_email' => 'You must enter a valid email'
+                    ]
                 ],
                 'password' => [
                     'rules' => 'required|min_length[5]|max_length[10]',
                     'errors' => [
-                            'required' => 'Password is required',
-                            'min_length' => 'Password must have atleast 5 characters in length',
-                            'max_length' => 'Password must not have more that 10 characters in length',
-                        ]
+                        'required' => 'Password is required',
+                        'min_length' => 'Password must have atleast 5 characters in length',
+                        'max_length' => 'Password must not have more that 10 characters in length',
+                    ]
                 ],
             ]);
 
@@ -120,6 +120,11 @@ class AuthController extends BaseController
                 // fetching databse to check user
                 $loginModel = new \App\Models\RegisterModel();
                 $user_data = $loginModel->where('email', $email)->first();
+                // check email is in databse or not
+                if (is_null($user_data)) {
+                    $message = ['status' => 'error', 'message' => 'Email not found!'];
+                    return $this->response->setJSON($message);
+                }
                 $check_password = Hash::pass_verify($password, $user_data['password']);
 
                 if (!$check_password) {
