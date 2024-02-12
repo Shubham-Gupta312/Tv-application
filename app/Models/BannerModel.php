@@ -35,4 +35,11 @@ class BannerModel extends Model
     {
         return $this->update($id, $data);
     }
+
+    public function countBanner()
+    {
+        $query = $this->db->query('SELECT COUNT(*) total from banner');
+        $result = $query->getRowArray();
+        return $result['total'];
+    }
 }

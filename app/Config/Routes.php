@@ -22,7 +22,7 @@ $routes->group('admin', function ($routes) {
 
 $routes->group('admin', ['filter' => 'isAdminLogin'], function ($routes) {
     // admin page (admin cms)
-    $routes->get('basavatv', 'Homecontroller::basavatv', ['filter' => 'isAdminLogin']);
+    $routes->get('basavatv', 'Homecontroller::basavatv');
     //highlighted_program
     $routes->get('highlighted_program', 'HomeController::highlighted_program');
     // add_highlighted
@@ -75,6 +75,11 @@ $routes->group('admin', ['filter' => 'isAdminLogin'], function ($routes) {
     $routes->post('update_BannerData', 'Homecontroller::update_BannerData');
     // products
     $routes->get('enquiry_data', 'ProductController::enquiry_data');
+    $routes->get('totalProduct', 'ProductController::totalProduct');
+    $routes->get('totalAdmin', 'Homecontroller::totalAdmin');
+    $routes->get('totalPreciousProgram', 'Homecontroller::totalPreciousProgram');
+    $routes->get('totalHighlightProgram', 'Homecontroller::totalHighlightProgram');
+    $routes->get('totalBanner', 'Homecontroller::totalBanner');
 });
 
 $routes->group('api', function ($routes) {

@@ -36,4 +36,10 @@ class HighlightedProgramModel extends Model
         return $this->update($id, $data);
     }
 
+    public function countHighlight()
+    {
+        $query = $this->db->query('SELECT COUNT(*) total from highlighted_program');
+        $result = $query->getRowArray();
+        return $result['total'];
+    }
 }

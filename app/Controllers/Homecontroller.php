@@ -681,25 +681,25 @@ class Homecontroller extends BaseController
         try {
             $updateBanner = new \App\Models\BannerModel();
             $id = $this->request->getPost('id');
-    
+
             // Retrieve uploaded banner image
             $bannerImage = $this->request->getFile('banner_img');
-    
+
             $data = [
                 'banner_name' => $this->request->getPost('banner_name'),
             ];
-    
+
             // Check if a new banner image was uploaded
             if ($bannerImage->isValid() && !$bannerImage->hasMoved()) {
                 // Define upload directory and filename
                 $newName = $bannerImage->getRandomName();
                 $uploadPath = '../public/assets/uploads/banner'; // Your upload directory
                 $bannerImage->move($uploadPath, $newName);
-                
+
                 // Add the path to the image in the data array
                 $data['banner_img'] = $newName;
             }
-    
+
             $updated = $updateBanner->updateBanner($id, $data);
             if ($updated) {
                 return $this->response->setJSON(['status' => 'success', 'message' => 'Banner updated successfully']);
@@ -711,6 +711,49 @@ class Homecontroller extends BaseController
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }
-    
+
+    public function totalAdmin()
+    {
+        $totAdmin = new \App\Models\AdminModel();
+        // Count banners
+        $totalAdmin = $totAdmin->countAdmin();
+        // echo $totalAdmin;
+        if ($totalAdmin != 0) {
+            return $this->response->setJSON($totalAdmin);
+        } else {
+            return $this->response->setJSON(["status" => "fail", "message" => "No Records Found!"]);
+        }
+    }
+
+    public function totalPreciousProgram()
+    {
+        $totProg = new \App\Models\PreciousProgramModel();
+        $totalPrecious = $totProg->countPrecious();
+        if ($totalPrecious != 0) {
+            return $this->response->setJSON($totalPrecious);
+        } else {
+            return $this->response->setJSON(["status" => "fail", "message" => "No Records Found!"]);
+        }
+    }
+    public function totalHighlightProgram()
+    {
+        $totProg = new \App\Models\HighlightedProgramModel();
+        $totalHighlight = $totProg->countHighlight();
+        if ($totalHighlight != 0) {
+            return $this->response->setJSON($totalHighlight);
+        } else {
+            return $this->response->setJSON(["status" => "fail", "message" => "No Records Found!"]);
+        }
+    }
+    public function totalBanner()
+    {
+        $totBanner = new \App\Models\BannerModel();
+        $totalBanner = $totBanner->countBanner();
+        if ($totalBanner != 0) {
+            return $this->response->setJSON($totalBanner);
+        } else {
+            return $this->response->setJSON(["status" => "fail", "message" => "No Records Found!"]);
+        }
+    }
 
 }

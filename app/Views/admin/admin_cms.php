@@ -15,108 +15,120 @@
                 <!-- Column -->
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-row">
-                                <div
-                                    class="round round-lg text-white d-inline-block text-center rounded-circle bg-info">
-                                    <i class="ti-wallet"></i>
-                                </div>
-                                <div class="ml-2 align-self-center">
-                                    <h3 class="mb-0 font-weight-light">01</h3>
-                                    <h5 class="text-muted mb-0">Precious Program</h5>
+                        <a href="/admin/precious_program" style="text-decoration: none;">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div
+                                        class="round round-lg text-white d-inline-block text-center rounded-circle bg-info">
+                                        <i class="ti-wallet"></i>
+                                    </div>
+                                    <div class="ml-2 align-self-center">
+                                        <h3 class="mb-0 font-weight-light" id="prcsCnt"></h3>
+                                        <h5 class="text-muted mb-0">Precious Program</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <!-- Column -->
                 <!-- Column -->
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-row">
-                                <div
-                                    class="round round-lg text-white d-inline-block text-center rounded-circle bg-warning">
-                                    <i class="mdi mdi-cellphone-link"></i>
-                                </div>
-                                <div class="ml-2 align-self-center">
-                                    <h3 class="mb-0 font-weight-light">8</h3>
-                                    <h5 class="text-muted mb-0">Highlighted Program</h5>
+                        <a href="/admin/highlighted_program" style="text-decoration: none;">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div
+                                        class="round round-lg text-white d-inline-block text-center rounded-circle bg-warning">
+                                        <i class="mdi mdi-cellphone-link"></i>
+                                    </div>
+                                    <div class="ml-2 align-self-center">
+                                        <h3 class="mb-0 font-weight-light" id="hghlhtCnt"></h3>
+                                        <h5 class="text-muted mb-0">Highlighted Program</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <!-- Column -->
                 <!-- Column -->
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-row">
-                                <div
-                                    class="round round-lg text-white d-inline-block text-center rounded-circle bg-primary">
-                                    <i class="mdi mdi-cart-outline"></i>
-                                </div>
-                                <div class="ml-2 align-self-center">
-                                    <h3 class="mb-0 font-weight-light">25</h3>
-                                    <h5 class="text-muted mb-0">Products</h5>
+                        <a href="/admin/product" style="text-decoration: none;">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div
+                                        class="round round-lg text-white d-inline-block text-center rounded-circle bg-primary">
+                                        <i class="mdi mdi-cart-outline"></i>
+                                    </div>
+                                    <div class="ml-2 align-self-center">
+                                        <h3 class="mb-0 font-weight-light" id="prdctCnt"></h3>
+                                        <h5 class="text-muted mb-0">Products</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <!-- Column -->
                 <!-- Column -->
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-row">
-                                <div
-                                    class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
-                                    <i class="mdi mdi-bullseye"></i>
-                                </div>
-                                <div class="ml-2 align-self-center">
-                                    <h3 class="mb-0 font-weight-light">03</h3>
-                                    <h5 class="text-muted mb-0">Admin Data</h5>
+                        <a href="/admin/admin_data" style="text-decoration: none;">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div
+                                        class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
+                                        <i class="mdi mdi-bullseye"></i>
+                                    </div>
+                                    <div class="ml-2 align-self-center">
+                                        <h3 class="mb-0 font-weight-light" id="admnCnt"></h3>
+                                        <h5 class="text-muted mb-0">Admin Data</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <!-- Column -->
                 <!-- Column -->
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-row">
-                                <div
-                                    class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
-                                    <i class="mdi mdi-bullseye"></i>
-                                </div>
-                                <div class="ml-2 align-self-center">
-                                    <h3 class="mb-0 font-weight-light">04</h3>
-                                    <h5 class="text-muted mb-0">Banners</h5>
+                        <a href="/admin/banners" style="text-decoration: none;">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div
+                                        class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
+                                        <i class="mdi mdi-bullseye"></i>
+                                    </div>
+                                    <div class="ml-2 align-self-center">
+                                        <h3 class="mb-0 font-weight-light" id="bnrCnt"></h3>
+                                        <h5 class="text-muted mb-0">Banners</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <!-- Column -->
                 <!-- Column -->
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-row">
-                                <div
-                                    class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
-                                    <i class="mdi mdi-bullseye"></i>
-                                </div>
-                                <div class="ml-2 align-self-center">
-                                    <h3 class="mb-0 font-weight-light">10</h3>
-                                    <h5 class="text-muted mb-0">Enquiry Products</h5>
+                        <a href="/admin/enquiry_data" style="text-decoration: none;">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div
+                                        class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
+                                        <i class="mdi mdi-bullseye"></i>
+                                    </div>
+                                    <div class="ml-2 align-self-center">
+                                        <h3 class="mb-0 font-weight-light"></h3>
+                                        <h5 class="text-muted mb-0">Enquiry Products</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <!-- Column -->
@@ -136,5 +148,5 @@
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
-
+<script src="<?= ASSET_URL . 'public/assets/js/admin_panel.js' ?>"></script>
 <?= $this->endSection() ?>

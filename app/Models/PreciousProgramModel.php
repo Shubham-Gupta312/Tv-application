@@ -35,4 +35,11 @@ class PreciousProgramModel extends Model
     {
         return $this->update($id, $data);
     }
+
+    public function countPrecious()
+    {
+        $query = $this->db->query('SELECT COUNT(*) total from precious_program');
+        $result = $query->getRowArray();
+        return $result['total'];
+    }
 }

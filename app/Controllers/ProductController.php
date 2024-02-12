@@ -114,7 +114,7 @@ class ProductController extends BaseController
                     1 => $row['prod_id'],
                     2 => $row['prod_name'],
                     3 => '<img src="' . ASSET_URL . 'public/assets/uploads/' . $row['prod_img'] . '"height="100px" width="100px">',
-                    4 => $row['prod_price'],    
+                    4 => $row['prod_price'],
                     5 => $row['prod_desc'],
                     6 => '<button class="btn ' . $buttonCSSClass . ' active" id="active"><i class="' . $iconClass . '"></i></button>
                         <button class="btn btn-danger delete" id="delete"><i class="bi bi-trash3"></i></button>
@@ -245,7 +245,7 @@ class ProductController extends BaseController
                 $newName = $productImg->getRandomName();
                 $uploadPath = '../public/assets/uploads'; // Your upload directory
                 $productImg->move($uploadPath, $newName);
-                
+
                 // Add the path to the image in the data array
                 $data['prod_img'] = $newName;
             }
@@ -267,4 +267,17 @@ class ProductController extends BaseController
         return view('admin/enquiry_products');
     }
 
+    public function totalProduct()
+    {
+        $totBanner = new \App\Models\ProductModel();
+        // Count banners
+        $totalBanners = $totBanner->countProduct();
+        // echo $totalBanners;
+        if($totalBanners != 0){
+            return $this->response->setJSON($totalBanners);
+        }else{
+            return $this->response->setJSON(["status"=>"fail","message"=>"No Records Found!"]);
+
+        }
+    }
 }

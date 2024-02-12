@@ -40,4 +40,10 @@ class ProductModel extends Model
     {
         return $this->update($id, $data);
     }
+
+    public function countProduct(){
+        $query = $this->db->query('SELECT COUNT(*) as total FROM products');
+        $result = $query->getRowArray();
+        return $result['total'];
+    }
 }
