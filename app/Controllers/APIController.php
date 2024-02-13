@@ -19,6 +19,11 @@ class APIController extends BaseController
             $bannerModel = new \App\Models\BannerModel();
             $bannerData = $bannerModel->findAll();
 
+            $baseURl = "http://localhost/basava_tv/public/assets/uploads/banner/";
+            foreach ($bannerData as &$bannerItem) {
+                // Concatenate base URL with the image name
+                $bannerItem['banner_img'] = $baseURl . $bannerItem['banner_img'];
+            }
             $mergedData = [
                 'videos' => $highlightData,
                 'precious' => $preciousData,
@@ -126,6 +131,13 @@ class APIController extends BaseController
     {
         $fetchData = new \App\Models\ProductModel();
         $products = $fetchData->findAll();
+
+        $baseURl = "http://localhost/basava_tv/public/assets/uploads/";
+        foreach ($products as &$productItem) {
+            // Concatenate base URL with the image name
+            $productItem['prod_img'] = $baseURl . $productItem['prod_img'];
+        }
+
         if (!empty($products)) {
             $output = [
                 'status' => 'true',
@@ -147,6 +159,13 @@ class APIController extends BaseController
     {
         $fetchData = new \App\Models\BannerModel;
         $banner = $fetchData->findAll();
+
+        $baseURl = "http://localhost/basava_tv/public/assets/uploads/banner/";
+        foreach ($banner as &$bannerItem) {
+            // Concatenate base URL with the image name
+            $bannerItem['banner_img'] = $baseURl . $bannerItem['banner_img'];
+        }
+
         if (!empty($banner)) {
             $output = [
                 'status' => 'true',
