@@ -4,6 +4,44 @@ namespace App\Controllers;
 
 class APIController extends BaseController
 {
+    public function home_api()
+    {
+        try {
+            $highlightedModel = new \App\Models\HighlightedProgramModel();
+            $highlightData = $highlightedModel->findAll();
+    
+            $preciousModel = new \App\Models\PreciousProgramModel();
+            $preciousData = $preciousModel->findAll();
+    
+            $productModel = new \App\Models\ProductModel();
+            $productData = $productModel->findAll();
+    
+            $bannerModel = new \App\Models\BannerModel();
+            $bannerData = $bannerModel->findAll();
+
+            $mergedData = [
+                'videos' => $highlightData,
+                'precious' => $preciousData,
+                'products' => $productData,
+                'banners' => $bannerData
+            ];
+
+            $output = [
+                'status' => 'true',
+                'message' => 'Home Data Retrieved Successfully',
+                'data' => $mergedData
+            ];
+        } catch (\Exception $e) {
+            $output = [
+                'status' => 'false',
+                'message' => $e->getMessage(),
+                'data' => []
+            ];
+        }
+
+        return $this->response->setJSON($output);
+
+    }
     public function fetch_data()
     {
         $fetchData = new \App\Models\HighlightedProgramModel();

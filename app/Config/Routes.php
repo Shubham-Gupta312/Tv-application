@@ -86,6 +86,7 @@ $routes->group('api', function ($routes) {
     // retrive_data
     $routes->get('retrive_data', 'Homecontroller::retrive_data');
     $routes->get('fetch_data', 'APIController::fetch_data');
+    $routes->get('home_api', 'APIController::home_api');
     // precious program
     $routes->get('precious', 'Homecontroller::precious');
     $routes->get('fetch_precious', 'APIController::fetch_precious');
