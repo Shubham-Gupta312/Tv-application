@@ -93,6 +93,7 @@ $routes->group('api', function ($routes) {
     // products
     $routes->get('fetch_product', 'ProductController::fetch_product');
     $routes->get('retrive_product', 'APIController::retrive_product');
+    $routes->get('all_program', 'APIController::all_program');
     // banner
     $routes->get('fetch_banner', 'Homecontroller::fetch_banner');
     $routes->get('retrive_banner', 'APIController::retrive_banner');

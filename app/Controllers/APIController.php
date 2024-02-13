@@ -9,13 +9,13 @@ class APIController extends BaseController
         try {
             $highlightedModel = new \App\Models\HighlightedProgramModel();
             $highlightData = $highlightedModel->findAll();
-    
+
             $preciousModel = new \App\Models\PreciousProgramModel();
             $preciousData = $preciousModel->findAll();
-    
+
             $productModel = new \App\Models\ProductModel();
             $productData = $productModel->findAll();
-    
+
             $bannerModel = new \App\Models\BannerModel();
             $bannerData = $bannerModel->findAll();
 
@@ -41,6 +41,43 @@ class APIController extends BaseController
 
         return $this->response->setJSON($output);
 
+    }
+
+    public function all_program()
+    {
+        try {
+            $highlightedModel = new \App\Models\HighlightedProgramModel();
+            $highlightData = $highlightedModel->findAll();
+
+            $preciousModel = new \App\Models\PreciousProgramModel();
+            $preciousData = $preciousModel->findAll();
+
+            $highlightData = array_map(function($item) {
+                $item['id'] = 'highlight_' . $item['id'];
+                return $item;
+            }, $highlightData);
+        
+            $preciousData = array_map(function($item) {
+                $item['id'] = 'precious_' . $item['id'];
+                return $item;
+            }, $preciousData);
+            
+            $mergedData = array_merge($highlightData, $preciousData);
+        
+            $output = [
+                'status' => 'true',
+                'message' => 'All Program Data Retrieved Successfully',
+                'data' => $mergedData
+            ];
+        } catch (\Exception $e) {
+            $output = [
+                'status' => 'false',
+                'message' => $e->getMessage(),
+                'data' => []
+            ];
+        }
+
+        return $this->response->setJSON($output);
     }
     public function fetch_data()
     {
