@@ -112,7 +112,7 @@ class APIController extends BaseController
     public function fetch_precious()
     {
         $fetchData = new \App\Models\PreciousProgramModel();
-        $videoData = $fetchData->where('status', 1)->findAll();
+        $videoData = $fetchData->findAll();
 
         // Filter video data based on status being 1
         $filteredVideoData = [];
