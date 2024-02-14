@@ -80,6 +80,7 @@ $routes->group('admin', ['filter' => 'isAdminLogin'], function ($routes) {
     $routes->get('totalPreciousProgram', 'Homecontroller::totalPreciousProgram');
     $routes->get('totalHighlightProgram', 'Homecontroller::totalHighlightProgram');
     $routes->get('totalBanner', 'Homecontroller::totalBanner');
+    $routes->get('totalEnquiryProducts', 'Homecontroller::totalEnquiryProducts');
 });
 
 $routes->group('api', function ($routes) {

@@ -44,4 +44,13 @@ $(document).ready(function () {
             $('#bnrCnt').text(formatResponse);
         }
     });
+    $.ajax({
+        method: "GET",
+        url: "/admin/totalEnquiryProducts",
+        success: function (response) {
+            var formatResponse = response < 10 ? '0' + response : response;
+            // console.log(formatResponse);
+            $('#enqprdCnt').text(formatResponse);
+        }
+    });
 });

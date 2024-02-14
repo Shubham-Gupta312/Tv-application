@@ -755,5 +755,15 @@ class Homecontroller extends BaseController
             return $this->response->setJSON(["status" => "fail", "message" => "No Records Found!"]);
         }
     }
+    public function totalEnquiryProducts()
+    {
+        $totEnqProducts = new \App\Models\EnquiryModel();
+        $totalEnqProducts = $totEnqProducts->countEnqProducts();
+        if ($totalEnqProducts != 0) {
+            return $this->response->setJSON($totalEnqProducts);
+        } else {
+            return $this->response->setJSON(["status" => "fail", "message" => "No Records Found!"]);
+        }
+    }
 
 }

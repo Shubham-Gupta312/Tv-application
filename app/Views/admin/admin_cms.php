@@ -123,7 +123,7 @@
                                         <i class="mdi mdi-bullseye"></i>
                                     </div>
                                     <div class="ml-2 align-self-center">
-                                        <h3 class="mb-0 font-weight-light"></h3>
+                                        <h3 class="mb-0 font-weight-light" id="enqprdCnt"></h3>
                                         <h5 class="text-muted mb-0">Enquiry Products</h5>
                                     </div>
                                 </div>

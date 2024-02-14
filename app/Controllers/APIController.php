@@ -11,16 +11,16 @@ class APIController extends BaseController
     {
         try {
             $highlightedModel = new \App\Models\HighlightedProgramModel();
-            $highlightData = $highlightedModel->findAll();
-
+            $highlightData = $highlightedModel->where('status', 1)->findAll();
+    
             $preciousModel = new \App\Models\PreciousProgramModel();
-            $preciousData = $preciousModel->findAll();
-
+            $preciousData = $preciousModel->where('status', 1)->findAll();
+    
             $productModel = new \App\Models\ProductModel();
-            $productData = $productModel->findAll();
-
+            $productData = $productModel->where('status', 1)->findAll();
+    
             $bannerModel = new \App\Models\BannerModel();
-            $bannerData = $bannerModel->findAll();
+            $bannerData = $bannerModel->where('status', 1)->findAll();
 
             $baseURl = "http://localhost/basava_tv/public/assets/uploads/banner/";
             foreach ($bannerData as &$bannerItem) {
@@ -55,10 +55,10 @@ class APIController extends BaseController
     {
         try {
             $highlightedModel = new \App\Models\HighlightedProgramModel();
-            $highlightData = $highlightedModel->findAll();
+            $highlightData = $highlightedModel->where('status', 1)->findAll();
 
             $preciousModel = new \App\Models\PreciousProgramModel();
-            $preciousData = $preciousModel->findAll();
+            $preciousData = $preciousModel->where('status', 1)->findAll();
 
             $highlightData = array_map(function ($item) {
                 $item['id'] = 'highlight_' . $item['id'];
@@ -90,7 +90,7 @@ class APIController extends BaseController
     public function fetch_data()
     {
         $fetchData = new \App\Models\HighlightedProgramModel();
-        $videoData = $fetchData->findAll();
+        $videoData = $fetchData->where('status', 1)->findAll();
         if (!empty($videoData)) {
             $output = [
                 'status' => 'true',
@@ -112,12 +112,21 @@ class APIController extends BaseController
     public function fetch_precious()
     {
         $fetchData = new \App\Models\PreciousProgramModel();
-        $videoData = $fetchData->findAll();
-        if (!empty($videoData)) {
+        $videoData = $fetchData->where('status', 1)->findAll();
+
+        // Filter video data based on status being 1
+        $filteredVideoData = [];
+        foreach ($videoData as $video) {
+            if ($video['status'] == 1) {
+                $filteredVideoData[] = $video;
+            }
+        }
+
+        if (!empty($filteredVideoData)) {
             $output = [
                 'status' => 'true',
                 'message' => 'Video Data',
-                'data' => $videoData
+                'data' => $filteredVideoData
             ];
         } else {
             $output = [
@@ -133,7 +142,7 @@ class APIController extends BaseController
     public function retrive_product()
     {
         $fetchData = new \App\Models\ProductModel();
-        $products = $fetchData->findAll();
+        $products = $fetchData->where('status', 1)->findAll();
 
         $baseURl = "http://localhost/basava_tv/public/assets/uploads/";
         foreach ($products as &$productItem) {
@@ -161,7 +170,7 @@ class APIController extends BaseController
     public function retrive_banner()
     {
         $fetchData = new \App\Models\BannerModel;
-        $banner = $fetchData->findAll();
+        $banner = $fetchData->where('status', 1)->findAll();
 
         $baseURl = "http://localhost/basava_tv/public/assets/uploads/banner/";
         foreach ($banner as &$bannerItem) {

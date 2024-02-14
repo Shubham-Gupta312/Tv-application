@@ -11,4 +11,10 @@ class EnquiryModel extends Model
     protected $primaryKey = 'id';
     protected $protectFields = [];
 
+    public function countEnqProducts()
+    {
+        $query = $this->db->query('SELECT COUNT(*) total from enquiry_product');
+        $result = $query->getRowArray();
+        return $result['total'];
+    }
 }
