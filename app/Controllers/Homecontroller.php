@@ -440,11 +440,11 @@ class Homecontroller extends BaseController
             $length = $_GET['length'];
 
             // Fetch banners
-            $data['banner'] = $fetchAdmin->findAll($length, $start);
+            $data['admin'] = $fetchAdmin->findAll($length, $start);
             $totalRecords = $fetchAdmin->countAll();
             $associativeArray = [];
 
-            foreach ($data['banner'] as $row) {
+            foreach ($data['admin'] as $row) {
                 $associativeArray[] = array(
                     0 => $row['id'],
                     1 => $row['name'],
@@ -452,7 +452,7 @@ class Homecontroller extends BaseController
                 );
             }
 
-            if (empty($data['banner'])) {
+            if (empty($data['admin'])) {
                 $output = array(
                     "draw" => intval($draw),
                     "recordsTotal" => 0,

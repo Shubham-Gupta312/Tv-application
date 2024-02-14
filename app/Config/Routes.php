@@ -99,5 +99,8 @@ $routes->group('api', function ($routes) {
     $routes->get('retrive_banner', 'APIController::retrive_banner');
     // admin 
     $routes->get('admin_info', 'Homecontroller::admin_info');
+    // enquiry product
+    $routes->post('enquiry_product', 'APIController::enquiry_product');
+    $routes->get('fetch_enquiryProduct', 'ProductController::fetch_enquiryProduct');
 
 });

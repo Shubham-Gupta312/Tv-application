@@ -2,8 +2,11 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\API\ResponseTrait;
+
 class APIController extends BaseController
 {
+    use ResponseTrait;
     public function home_api()
     {
         try {
@@ -57,18 +60,18 @@ class APIController extends BaseController
             $preciousModel = new \App\Models\PreciousProgramModel();
             $preciousData = $preciousModel->findAll();
 
-            $highlightData = array_map(function($item) {
+            $highlightData = array_map(function ($item) {
                 $item['id'] = 'highlight_' . $item['id'];
                 return $item;
             }, $highlightData);
-        
-            $preciousData = array_map(function($item) {
+
+            $preciousData = array_map(function ($item) {
                 $item['id'] = 'precious_' . $item['id'];
                 return $item;
             }, $preciousData);
-            
+
             $mergedData = array_merge($highlightData, $preciousData);
-        
+
             $output = [
                 'status' => 'true',
                 'message' => 'All Program Data Retrieved Successfully',
@@ -182,4 +185,44 @@ class APIController extends BaseController
 
         return $this->response->setJSON($output);
     }
+
+    public function enquiry_product()
+    {
+        $name = $this->request->getVar('name');
+        $email = $this->request->getVar('email');
+        $phone = $this->request->getVar('phone');
+        $address = $this->request->getVar('address');
+        $productId = $this->request->getVar('product_id');
+        $productName = $this->request->getVar('product_name');
+
+        // Check if product id is empty
+        if (empty($productId)) {
+            return $this->respond([
+                'status' => 'error',
+                'message' => 'Product ID is empty'
+            ]);
+        }
+
+        // Load model
+        $model = new \App\Models\EnquiryModel();
+
+        // Save data to database
+        $data = [
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'address' => $address,
+            'product_id' => $productId,
+            'product_name' => $productName
+        ];
+
+        $enquiryData = $model->insert($data);
+
+        // Send response
+        return $this->respondCreated([
+            'status' => 'success',
+            'message' => 'Data inserted successfully',
+        ]);
+    }
+
 }

@@ -266,7 +266,56 @@ class ProductController extends BaseController
     {
         return view('admin/enquiry_products');
     }
+    public function fetch_enquiryProduct(){
+        try {
+            $fetchData = new \App\Models\EnquiryModel();
 
+            $draw = $_GET['draw'];
+            $start = $_GET['start'];
+            $length = $_GET['length'];
+
+            // Fetch products
+            $data['enquiry_product'] = $fetchData->findAll($length, $start);
+            $totalRecords = $fetchData->countAll();
+            $associativeArray = [];
+
+            foreach ($data['enquiry_product'] as $row) {
+
+                $associativeArray[] = array(
+                    0 => $row['id'],
+                    1 => $row['name'],
+                    2 => $row['email'],
+                    3 => $row['phone'],
+                    4 => $row['address'],
+                    5 => $row['product_id'],
+                    6 => $row['product_name'],
+                );
+            }
+
+            if (empty($data['enquiry_product'])) {
+                $output = array(
+                    "draw" => intval($draw),
+                    "recordsTotal" => 0,
+                    "recordsFiltered" => 0,
+                    "data" => [],
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($draw),
+                    "recordsTotal" => $totalRecords,
+                    "recordsFiltered" => $totalRecords,
+                    "data" => $associativeArray,
+                );
+            }
+
+            return $this->response->setJSON($output);
+        } catch (\Exception $e) {
+            // Log the caught exception
+            log_message('error', 'Error in fetch_product: ' . $e->getMessage());
+
+            return $this->response->setJSON(['error' => 'Internal Server Error']);
+        }
+    }
     public function totalProduct()
     {
         $totBanner = new \App\Models\ProductModel();

@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="mb-3">
-                                                    <label for="title" class="form-label">Product ID</label><span
+                                                    <label for="title" class="form-label">Unique Product ID</label><span
                                                         class="text-danger">*</span>
                                                     <input type="text" class="form-control" id="prod_id" name="prod_id">
                                                     <div class="invalid-feedback" class="text-danger" id="prod_id_msg">
