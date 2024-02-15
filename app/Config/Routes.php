@@ -75,6 +75,13 @@ $routes->group('admin', ['filter' => 'isAdminLogin'], function ($routes) {
     $routes->post('update_BannerData', 'Homecontroller::update_BannerData');
     // products
     $routes->get('enquiry_data', 'ProductController::enquiry_data');
+    //live tv
+    $routes->get('livetv', 'LiveTvController::livetv');
+    // add live tv
+    $routes->post('add_livetv', 'LiveTvController::add_livetv');
+    // update live tv
+    $routes->post('update_livetv', 'LiveTvController::add_livetv');
+    // count 
     $routes->get('totalProduct', 'ProductController::totalProduct');
     $routes->get('totalAdmin', 'Homecontroller::totalAdmin');
     $routes->get('totalPreciousProgram', 'Homecontroller::totalPreciousProgram');
@@ -103,5 +110,8 @@ $routes->group('api', function ($routes) {
     // enquiry product
     $routes->post('enquiry_product', 'APIController::enquiry_product');
     $routes->get('fetch_enquiryProduct', 'ProductController::fetch_enquiryProduct');
+    // live tv
+    $routes->get('retrive_livetv', 'LiveTvController::retrive_livetv');
+    $routes->get('live_tv', 'APIController::live_tv');
 
 });

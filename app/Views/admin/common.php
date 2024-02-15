@@ -88,19 +88,26 @@
                         <span class="hide-menu">Highlighted Program</span>
                     </a>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= base_url('admin/product')?>"
-                        aria-expanded="false"><i class="mdi mdi-account-box"></i><span
-                            class="hide-menu">Products</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=base_url('admin/admin_data') ?>"
-                        aria-expanded="false"><i class="mdi mdi-book"></i><span class="hide-menu">Admin Data</span></a>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="<?= base_url('admin/product') ?>" aria-expanded="false"><i
+                            class="mdi mdi-account-box"></i><span class="hide-menu">Products</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="<?= base_url('admin/admin_data') ?>" aria-expanded="false"><i
+                            class="mdi mdi-book"></i><span class="hide-menu">Admin Data</span></a>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=base_url('admin/banners')?>"
-                        aria-expanded="false"><i class="mdi mdi-arrange-bring-forward"></i><span
-                            class="hide-menu">Banners</span></a>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="<?= base_url('admin/banners') ?>" aria-expanded="false"><i
+                            class="mdi mdi-arrange-bring-forward"></i><span class="hide-menu">Banners</span></a>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= base_url('admin/enquiry_data') ?>"
-                        aria-expanded="false"><i class="mdi mdi-clipboard-text"></i><span class="hide-menu">Enquiry
-                            Products</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="<?= base_url('admin/enquiry_data') ?>" aria-expanded="false"><i
+                            class="mdi mdi-clipboard-text"></i><span class="hide-menu">Enquiry
+                            Products</span></a>
+                </li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="<?= base_url('admin/livetv') ?>" aria-expanded="false"><i
+                            class="mdi mdi-clipboard-text"></i><span class="hide-menu">Live TV</span></a>
+                </li>
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

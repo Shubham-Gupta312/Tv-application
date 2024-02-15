@@ -225,13 +225,34 @@ class APIController extends BaseController
             'product_name' => $productName
         ];
 
-        $enquiryData = $model->insert($data);
+        $model->insert($data);
 
         // Send response
         return $this->respondCreated([
             'status' => 'success',
             'message' => 'Data inserted successfully',
         ]);
+    }
+
+    public function live_tv(){
+        $live = new \App\Models\LivetvModel();
+        $livetv = $live->findAll();
+
+        if (!empty($livetv)) {
+            $output = [
+                'status' => 'true',
+                'message' => 'Livetv Data',
+                'data' => $livetv
+            ];
+        } else {
+            $output = [
+                'status' => 'false',
+                'message' => 'No Data found',
+                'data' => []
+            ];
+        }
+
+        return $this->response->setJSON($output);
     }
 
 }

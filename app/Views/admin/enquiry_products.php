@@ -42,22 +42,5 @@
     </div>
 </div>
 
-<script>
-    var table = $('#enqProduct').DataTable({
-        processing: true,
-        serverSide: true,
-        paging: true,
-        ajax: {
-            url: "<?= base_url('api/fetch_enquiryProduct') ?>",
-            // url: "/api/fetch_banner",
-            type: "GET",
-            error: function (xhr, error, thrown) {
-                // console.log("AJAX error:", xhr, error, thrown);
-            }
-        },
-        drawCallback: function (settings) {
-            // console.log('Table redrawn:', settings);
-        },
-    });
-</script>
+<script src="<?= ASSET_URL . 'public/assets/js/enquiry_product.js' ?>"></script>
 <?= $this->endSection() ?>
