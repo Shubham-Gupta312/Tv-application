@@ -12,13 +12,13 @@ class APIController extends BaseController
         try {
             $highlightedModel = new \App\Models\HighlightedProgramModel();
             $highlightData = $highlightedModel->where('status', 1)->findAll();
-    
+
             $preciousModel = new \App\Models\PreciousProgramModel();
             $preciousData = $preciousModel->where('status', 1)->findAll();
-    
+
             $productModel = new \App\Models\ProductModel();
             $productData = $productModel->where('status', 1)->findAll();
-    
+
             $bannerModel = new \App\Models\BannerModel();
             $bannerData = $bannerModel->where('status', 1)->findAll();
 
@@ -234,25 +234,35 @@ class APIController extends BaseController
         ]);
     }
 
+  
     public function live_tv(){
         $live = new \App\Models\LivetvModel();
         $livetv = $live->findAll();
-
+    
         if (!empty($livetv)) {
+            $urls = [];
+            foreach ($livetv as $item) {
+                $urls[] = $item['livetv_url'];
+            }
+    
+            $message =  implode(',', $urls);
+    
             $output = [
                 'status' => 'true',
-                'message' => 'Livetv Data',
-                'data' => $livetv
+                'message' => 'Live Tv Data',
+                'live_tv' => $message,
             ];
         } else {
             $output = [
                 'status' => 'false',
                 'message' => 'No Data found',
-                'data' => []
             ];
         }
-
+    
         return $this->response->setJSON($output);
     }
+    
+
+    
 
 }
