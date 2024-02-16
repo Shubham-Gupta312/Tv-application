@@ -3,6 +3,16 @@ var table = $('#productTable').DataTable({
     processing: true,
     serverSide: true,
     paging: true,
+    "iDisplayLength": 5,
+    "pageLength": 5,
+    "aLengthMenu": [[5,10,25,50],[5,10,25,50]],
+    "fnCreatedRow": function (row, data, index){
+       var pageInfo = table.page.info(); // Get page information
+        var currentPage = pageInfo.page; // Current page index
+        var pageLength = pageInfo.length; // Number of rows per page
+        var rowNumber = index + 1 + (currentPage * pageLength); // Calculate row number
+        $('td', row).eq(0).html(rowNumber); // Update index colum
+    },
     ajax: {
         url: "/api/fetch_product",
         type: "GET"
@@ -136,7 +146,7 @@ $(document).on('click', '#update', function (e) {
             var product_name = response.data.prod_name;
             var product_price = response.data.prod_price;
             var product_desc = response.data.prod_desc;
-            var product_image = response.data.prod_img;
+            // var product_image = response.data.prod_img;
             // console.log(product_id);
 
             // initalise the value to input feild

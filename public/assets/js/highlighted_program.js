@@ -3,6 +3,16 @@ var table = $('#myTable').DataTable({
     processing: true,
     serverSide: true,
     paging: true,
+    "iDisplayLength": 5,
+    "aLengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]], 
+    "fnCreatedRow": function (row, data, index){
+        var pageInfo = table.page.info(); // Get page information
+        var currentPage = pageInfo.page; // Current page index
+        var pageLength = pageInfo.length; // Number of rows per page
+        console.log(pageInfo.recordsTotal);
+        var rowNumber = index + 1 + (currentPage * pageLength); // Calculate row number
+        $('td', row).eq(0).html(rowNumber); // Update index column
+    },
     ajax: {
         url: "/api/retrive_data",
         type: "GET"
@@ -11,6 +21,7 @@ var table = $('#myTable').DataTable({
         // console.log('Table redrawn:', settings);
     }
 });
+
 // open modal, save and fetch data
 $(document).ready(function () {
     $('#save').click(function (e) {
@@ -28,6 +39,7 @@ $(document).ready(function () {
                 if (response.status == 'success') {
                     // $('input').val('');
                     $('#exampleModal').modal('hide');
+                    table.ajax.reload(null, false);
                     // console.log(response);
                 } else {
                     let error = response.errors;

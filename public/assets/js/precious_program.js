@@ -3,6 +3,16 @@ var table = $('#myTable').DataTable({
     processing: true,
     serverSide: true,
     paging: true,
+    "iDisplayLength": 5,
+    "pageLength": 5,
+    "aLengthMenu": [[5,10,25,50],[5,10,25,50]],
+    "fnCreatedRow": function (row, data, index){
+       var pageInfo = table.page.info(); // Get page information
+        var currentPage = pageInfo.page; // Current page index
+        var pageLength = pageInfo.length; // Number of rows per page
+        var rowNumber = index + 1 + (currentPage * pageLength); // Calculate row number
+        $('td', row).eq(0).html(rowNumber); // Update index colum
+    },
     ajax: {
         url: "/api/precious",
         // type: "POST"

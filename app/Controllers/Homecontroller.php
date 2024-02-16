@@ -75,6 +75,20 @@ class Homecontroller extends BaseController
         $draw = $_GET['draw'];
         $start = $_GET['start'];
         $length = $_GET['length'];
+        $searchValue = $_GET['search']['value']; // Get search value
+
+        // Order data by id in descending order
+        $fetchData->orderBy('id', 'DESC');
+
+        // Apply search filter if search value is provided
+        if (!empty($searchValue)) {
+            $fetchData->groupStart();
+            $fetchData->like('id', $searchValue);
+            $fetchData->orLike('video_title', $searchValue);
+            $fetchData->orLike('video_url', $searchValue);
+            $fetchData->groupEnd();
+        }
+
         $data['videoInfo'] = $fetchData->findAll($length, $start);
         $totalRecords = $fetchData->countAll();
         $associativeArray = [];
@@ -119,6 +133,7 @@ class Homecontroller extends BaseController
         return $this->response->setJSON($output);
         // echo json_encode($output);
     }
+
 
     public function setHighlightActiveStatus()
     {
@@ -280,6 +295,19 @@ class Homecontroller extends BaseController
         $draw = $_GET['draw'];
         $start = $_GET['start'];
         $length = $_GET['length'];
+        $searchValue = $_GET['search']['value'];
+
+        // set order in descending order of data
+        $fetchData->orderBy('id', 'DESC');
+
+        // Apply search filter
+        if(!empty($searchValue)){
+            $fetchData->groupStart();
+            $fetchData->like('id', $searchValue);
+            $fetchData->orLike('video_title', $searchValue);
+            $fetchData->orLike('video_url', $searchValue);
+            $fetchData->groupEnd();
+        }
         $data['videoInfo'] = $fetchData->findAll($length, $start);
         $totalRecords = $fetchData->countAll();
         $associativeArray = [];
@@ -545,6 +573,19 @@ class Homecontroller extends BaseController
             $draw = $_GET['draw'];
             $start = $_GET['start'];
             $length = $_GET['length'];
+            $searchValue = $_GET['search']['value'];
+
+            // fetch data in descending order
+            $fetchBanner->orderBy('id', 'DESC');
+
+            // Apply search filter
+            if(!empty($searchValue)){
+                $fetchBanner->groupStart();
+                $fetchBanner->like('id', $searchValue);
+                $fetchBanner->orLike('banner_name', $searchValue);
+                $fetchBanner->groupEnd();
+            }
+
 
             // Fetch banners
             $data['banner'] = $fetchBanner->findAll($length, $start);

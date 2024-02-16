@@ -92,7 +92,21 @@ class ProductController extends BaseController
             $draw = $_GET['draw'];
             $start = $_GET['start'];
             $length = $_GET['length'];
+            $searchValue = $_GET['search']['value'];
 
+            // data order in descending order
+            $fetchData->orderBy('id', 'DESC');
+
+            // Apply search filter logic
+            if(!empty($searchValue)){
+                $fetchData->groupStart();
+                $fetchData->like('id', $searchValue);
+                $fetchData->orLike('prod_id', $searchValue);
+                $fetchData->orLike('prod_name', $searchValue);
+                $fetchData->orLike('prod_price', $searchValue);
+                $fetchData->orLike('prod_desc', $searchValue);
+                $fetchData->groupEnd();
+            }
             // Fetch products
             $data['products'] = $fetchData->findAll($length, $start);
             $totalRecords = $fetchData->countAll();
@@ -273,7 +287,21 @@ class ProductController extends BaseController
             $draw = $_GET['draw'];
             $start = $_GET['start'];
             $length = $_GET['length'];
+            $searchValue = $_GET['search']['value'];
 
+            // data order in descending order
+            $fetchData->orderBy('id', 'DESC');
+
+            // Apply search filter
+            if(!empty($searchValue)){
+                $fetchData->groupStart();
+                $fetchData->like('id', $searchValue);
+                $fetchData->orLike('name', $searchValue);
+                $fetchData->orLike('email', $searchValue);
+                $fetchData->orLike('product_id', $searchValue);
+                $fetchData->orLike('product_name', $searchValue);
+                $fetchData->groupEnd();
+            }
             // Fetch products
             $data['enquiry_product'] = $fetchData->findAll($length, $start);
             $totalRecords = $fetchData->countAll();
