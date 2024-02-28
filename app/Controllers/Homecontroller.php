@@ -301,7 +301,7 @@ class Homecontroller extends BaseController
         $fetchData->orderBy('id', 'DESC');
 
         // Apply search filter
-        if(!empty($searchValue)){
+        if (!empty($searchValue)) {
             $fetchData->groupStart();
             $fetchData->like('id', $searchValue);
             $fetchData->orLike('video_title', $searchValue);
@@ -579,7 +579,7 @@ class Homecontroller extends BaseController
             $fetchBanner->orderBy('id', 'DESC');
 
             // Apply search filter
-            if(!empty($searchValue)){
+            if (!empty($searchValue)) {
                 $fetchBanner->groupStart();
                 $fetchBanner->like('id', $searchValue);
                 $fetchBanner->orLike('banner_name', $searchValue);
@@ -731,7 +731,7 @@ class Homecontroller extends BaseController
             ];
 
             // Check if a new banner image was uploaded
-            if ($bannerImage->isValid() && !$bannerImage->hasMoved()) {
+            if ($bannerImage && $bannerImage->isValid() && !$bannerImage->hasMoved()) {
                 // Define upload directory and filename
                 $newName = $bannerImage->getRandomName();
                 $uploadPath = '../public/assets/uploads/banner'; // Your upload directory
@@ -739,6 +739,9 @@ class Homecontroller extends BaseController
 
                 // Add the path to the image in the data array
                 $data['banner_img'] = $newName;
+            } else {
+                // Remove the 'prod_img' key from the data array if no image was uploaded
+                unset($data['banner_img']);
             }
 
             $updated = $updateBanner->updateBanner($id, $data);

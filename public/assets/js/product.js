@@ -163,7 +163,7 @@ $(document).on('click', '#update', function (e) {
 // Update Product Data
 $('#update_data').click(function (e) {
     e.preventDefault();
-    console.log('clicked');
+    // console.log('clicked');
     // Create a FormData object
     var formData = new FormData();
     
@@ -191,6 +191,7 @@ $('#update_data').click(function (e) {
         contentType: false,
         processData: false,
         success: function (response) {
+            console.log(response);
             if (response.status == 'success') {
                 $('#updateModal').modal('hide');
                 table.ajax.reload(null, false);

@@ -98,7 +98,7 @@ class ProductController extends BaseController
             $fetchData->orderBy('id', 'DESC');
 
             // Apply search filter logic
-            if(!empty($searchValue)){
+            if (!empty($searchValue)) {
                 $fetchData->groupStart();
                 $fetchData->like('id', $searchValue);
                 $fetchData->orLike('prod_id', $searchValue);
@@ -253,8 +253,9 @@ class ProductController extends BaseController
                 'prod_price' => $this->request->getPost('prod_price'),
                 'prod_desc' => $this->request->getPost('prod_desc'),
             ];
+
             // Check if a new product image was uploaded
-            if ($productImg->isValid() && !$productImg->hasMoved()) {
+            if ($productImg && $productImg->isValid() && !$productImg->hasMoved()) {
                 // Define upload directory and filename
                 $newName = $productImg->getRandomName();
                 $uploadPath = '../public/assets/uploads'; // Your upload directory
@@ -262,9 +263,14 @@ class ProductController extends BaseController
 
                 // Add the path to the image in the data array
                 $data['prod_img'] = $newName;
+            } else {
+                // Remove the 'prod_img' key from the data array if no image was uploaded
+                unset($data['prod_img']);
             }
-            // print_r($data);
+
+            // Update the product data
             $updated = $updateProduct->updateProduct($id, $data);
+
             if ($updated) {
                 return $this->response->setJSON(['status' => 'success', 'message' => 'Product updated successfully']);
             } else {
@@ -276,11 +282,14 @@ class ProductController extends BaseController
         }
     }
 
+
+
     public function enquiry_data()
     {
         return view('admin/enquiry_products');
     }
-    public function fetch_enquiryProduct(){
+    public function fetch_enquiryProduct()
+    {
         try {
             $fetchData = new \App\Models\EnquiryModel();
 
@@ -293,7 +302,7 @@ class ProductController extends BaseController
             $fetchData->orderBy('id', 'DESC');
 
             // Apply search filter
-            if(!empty($searchValue)){
+            if (!empty($searchValue)) {
                 $fetchData->groupStart();
                 $fetchData->like('id', $searchValue);
                 $fetchData->orLike('name', $searchValue);
@@ -350,10 +359,10 @@ class ProductController extends BaseController
         // Count banners
         $totalBanners = $totBanner->countProduct();
         // echo $totalBanners;
-        if($totalBanners != 0){
+        if ($totalBanners != 0) {
             return $this->response->setJSON($totalBanners);
-        }else{
-            return $this->response->setJSON(["status"=>"fail","message"=>"No Records Found!"]);
+        } else {
+            return $this->response->setJSON(["status" => "fail", "message" => "No Records Found!"]);
 
         }
     }
